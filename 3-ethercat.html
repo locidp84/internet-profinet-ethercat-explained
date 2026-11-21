@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3 · EtherCAT — The Sushi Belt</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="ec">
+<div id="stage">
+  <div class="hdr"><div class="num">3</div><h1>EtherCAT <span>· The Sushi Belt</span></h1><div class="count" id="count"></div><div class="dots" id="dots"></div></div>
+
+  <div id="world" data-id="world">
+    <svg class="layer" width="1280" height="720" viewBox="0 0 1280 720">
+      <!-- the belt: out along the top, turn at the end, back along the bottom -->
+      <path class="belt" d="M190 300 H1150 a47.5 47.5 0 0 1 0 95 H190"/>
+      <g stroke="#9aa1b5" stroke-width="6">
+        <line x1="380" y1="228" x2="380" y2="291"/><line x1="600" y1="228" x2="600" y2="291"/>
+        <line x1="820" y1="228" x2="820" y2="291"/><line x1="1040" y1="228" x2="1040" y2="291"/>
+      </g>
+    </svg>
+
+    <div class="actor card bob" data-id="ctrl" data-x="110" data-y="348" style="z-index:6"><div class="em">🧠</div><div class="lbl">PLC</div><div class="sub" data-id="ctrlSub" data-txt>the only one who<br>may load plates</div></div>
+
+    <div class="actor card small" data-id="d1" data-x="380" data-y="175"><div class="em">🚰</div><div class="lbl">Valve</div><div class="sub" data-id="s1" data-txt>closed</div></div>
+    <div class="actor card small" data-id="d2" data-x="600" data-y="175"><div class="em">⚙️</div><div class="lbl">Drive</div><div class="sub" data-id="s2" data-txt>0 rpm</div></div>
+    <div class="actor card small" data-id="d3" data-x="820" data-y="175"><div class="em">🔥</div><div class="lbl">Heater</div><div class="sub" data-id="s3" data-txt>off</div></div>
+    <div class="actor card small" data-id="d4" data-x="1040" data-y="175"><div class="em">💡</div><div class="lbl">Lamp</div><div class="sub" data-id="s4" data-txt>off</div></div>
+
+    <!-- THE plate: one Ethernet frame, one slot per device -->
+    <div class="actor plate" data-id="plate" data-x="330" data-y="300" data-o="0">
+      <div class="ph">🍣<br>EtherCAT<br>0x88A4</div>
+      <div class="cell" data-id="c1" data-txt style="background:var(--c-valve)">OPEN</div>
+      <div class="cell" data-id="c2" data-txt style="background:var(--c-drive)">1200</div>
+      <div class="cell" data-id="c3" data-txt style="background:var(--c-heater)">ON</div>
+      <div class="cell" data-id="c4" data-txt style="background:var(--c-lamp)">ON</div>
+    </div>
+
+    <div class="actor bubble wide" data-id="b1" data-x="700" data-y="485" data-o="0">🍣 <b>One</b> Ethernet frame. <b>One slot per device.</b> Everybody’s order is already on the plate.</div>
+    <div class="actor bubble wide" data-id="b2" data-x="700" data-y="485" data-o="0">⚡ No stopping. No waiting. No re-packing. The device swaps its slot <b>while the plate rolls by</b>.</div>
+    <div class="actor bubble wide" data-id="b3" data-x="700" data-y="485" data-o="0">🔄 The last device sees nobody after it and sends the plate <b>back</b> (the cable has two lanes).</div>
+
+    <div class="actor bubble" data-id="hw" data-x="400" data-y="490" data-o="0">🔌 Every device needs a <b>special chip</b> (an EtherCAT slave controller).</div>
+    <div class="actor bubble" data-id="cut" data-x="870" data-y="490" data-o="0">✂️ Cut the belt here and everyone behind the cut goes hungry. <b>(Ring topology fixes that.)</b></div>
+    <div class="actor" data-id="scissors" data-x="710" data-y="300" data-s=".2" data-o="0"><div class="em" style="font-size:56px">✂️</div></div>
+  </div>
+
+  <!-- comparison with PROFINET -->
+  <div class="actor panel" data-id="cmp" data-x="640" data-y="290" data-o="0" style="width:860px">
+    <h3>Per cycle, 4 devices:</h3>
+    <ul>
+      <li>PROFINET RT &nbsp; 🏍️🏍️🏍️🏍️ ➜ ➜ 🏍️🏍️🏍️🏍️ &nbsp; = <b>8 frames</b></li>
+      <li>EtherCAT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🍣 &nbsp;= <b>1 frame</b> (it just comes back full)</li>
+    </ul>
+    <small>No store-and-forward, no switch queues: about a microsecond per device. Cycles well under 1 ms are routine.</small>
+  </div>
+
+  <div class="actor panel" data-id="verdict" data-x="640" data-y="300" data-o="0" style="width:800px">
+    <h3>Verdict: EtherCAT</h3>
+    <ul>
+      <li>✅ Crazy fast and very precise timing</li>
+      <li>✅ Scales to hundreds of devices on one plate</li>
+      <li>✅ Perfect for many axes in tight sync</li>
+      <li>⚠️ Special hardware in every device</li>
+      <li>⚠️ Line/ring wiring, no ordinary switches in the chain</li>
+    </ul>
+  </div>
+
+  <div class="cap" id="cap"><h2 id="capT"></h2><p id="capP"></p></div>
+</div>
+
+<script src="assets/engine.js"></script>
+<script>
+// Timeline for the plate rolling over the devices. Plate is 300 px wide; cell i centre = -39 + 54*(i-1) from plate centre.
+const X0 = 330, X1 = 1040, SPEED = 0.2;              // px per ms
+const devX = [380, 600, 820, 1040];
+const reply = ['open ✔', '1187', '21 °C', 'OK ✔'];
+const state = ['OPEN', '1200 rpm', 'ON', 'ON'];
+const rolling = [{ id: 'plate', x: X1, dur: (X1 - X0) / SPEED, ease: 'linear' }];
+devX.forEach((dx, k) => {
+  const t = Math.round((dx - (-39 + 54 * k) - X0) / SPEED);
+  rolling.push({ id: 'c' + (k + 1), t: reply[k], cls: 'flash', delay: t });
+  rolling.push({ id: 's' + (k + 1), t: state[k], delay: t + 100 });
+  rolling.push({ id: 'd' + (k + 1), cls: 'pulse', delay: t });
+});
+
+Scene({
+  home: 'index.html', prev: '2-profinet.html', next: '4-showdown.html', nextLabel: 'Final: the showdown',
+  steps: [
+    { title: 'The Sushi Belt', text: 'Same mission again — but this time we ditch the couriers. <b>One plate. Everyone eats while it rolls by.</b>', do: [] },
+
+    { title: 'One plate for the whole restaurant',
+      text: 'Only the controller may put a plate on the belt. It is <b>one single Ethernet frame</b> (EtherType 0x88A4) with <b>one slot per device</b>. All the orders are already on it.',
+      do: [ { id: 'plate', o: 1, dur: 600 }, { id: 'b1', o: 1, dur: 500, delay: 400 } ] },
+
+    { title: 'The plate never stops',
+      text: 'Each device’s hardware <b>reads its order and drops in its answer on the fly</b> — while the frame is still moving. No “receive, think, forward”. About a microsecond per device.',
+      do: [ { id: 'b1', o: 0, dur: 300 }, { id: 'b2', o: 1, dur: 500, delay: 300 }, ...rolling ] },
+
+    { title: 'Turn around, come home',
+      text: 'The last device turns the plate around and it rides back to the controller — <b>with every answer on it</b>. One trip. Everyone served. Nobody “forwarded” anything.',
+      do: [
+        { id: 'b2', o: 0, dur: 300 }, { id: 'b3', o: 1, dur: 500, delay: 300 },
+        { id: 'plate', y: 395, dur: 800, ease: 'ease-in-out' },
+        { id: 'plate', x: X0, dur: (X1 - X0) / SPEED, delay: 800, ease: 'linear' },
+        { id: 'plate', o: 0, dur: 300, delay: 800 + (X1 - X0) / SPEED },
+        { id: 'ctrlSub', t: 'got all 4 answers ✔', delay: 800 + (X1 - X0) / SPEED },
+      ] },
+
+    { title: 'Count the vehicles',
+      text: 'PROFINET sends a courier to <b>every device, in each direction</b>. EtherCAT sends <b>one plate</b> that visits everybody. That is the whole trick.',
+      do: [ { id: 'b3', o: 0, dur: 200 }, { id: 'world', o: .12, dur: 500 }, { id: 'cmp', o: 1, dur: 500 } ] },
+
+    { title: 'The catch',
+      text: 'Everybody must <b>sit on the belt</b>: line or ring wiring, and every device needs <b>special hardware</b>. Cut the belt and the guests behind the cut go hungry.',
+      do: [
+        { id: 'cmp', o: 0, dur: 300 }, { id: 'world', o: 1, dur: 500 },
+        { id: 'hw', o: 1, dur: 500, delay: 400 },
+        { id: 'scissors', o: 1, s: 1, dur: 500, delay: 1200 },
+        { id: 'd3', cls: 'off', delay: 1700 }, { id: 'd4', cls: 'off', delay: 1700 },
+        { id: 'cut', o: 1, dur: 500, delay: 1700 },
+      ] },
+
+    { title: 'Verdict',
+      text: 'The sports car of industrial Ethernet: unbeatable when many axes must move <b>exactly together</b>. Finally: all three, side by side.',
+      do: [ { id: 'world', o: .12, dur: 600 }, { id: 'verdict', o: 1, dur: 600 } ] },
+  ]
+});
+</script>
+</body>
+</html>
