@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1 · The Internet (TCP/IP) — The Bureaucracy</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="tcp">
+<div id="stage">
+  <div class="hdr"><div class="num">1</div><h1>The Internet (TCP/IP) <span>· The Bureaucracy</span></h1><div class="count" id="count"></div><div class="dots" id="dots"></div></div>
+
+  <div id="world" data-id="world">
+    <div class="road" style="left:150px;top:325px;width:1000px"></div>
+
+    <div class="actor card bob" data-id="ctrl" data-x="120" data-y="330"><div class="em">🧠</div><div class="lbl">PLC</div><div class="sub">10.0.0.1</div></div>
+    <div class="actor card bob" data-id="router" data-x="640" data-y="330"><div class="em">🧑‍💼</div><div class="lbl">Router</div><div class="sub">“Information desk”</div></div>
+    <div class="actor card" data-id="valve" data-x="1150" data-y="330"><div class="em" data-id="valveEm" data-txt>🚰</div><div class="lbl">Valve</div><div class="sub">10.0.0.9</div></div>
+
+    <!-- handshake letters -->
+    <div class="actor letter" data-id="L1" data-x="300" data-y="190" data-o="0"><b>SYN</b>“May I send you something?”</div>
+    <div class="actor letter" data-id="L2" data-x="1000" data-y="190" data-o="0"><b>SYN-ACK</b>“Sure. May I send something back?”</div>
+    <div class="actor letter" data-id="L3" data-x="300" data-y="190" data-o="0"><b>ACK</b>“Yes, thanks. Sending now.”</div>
+
+    <!-- the parcel -->
+    <div class="actor parcel" data-id="parcel" data-x="150" data-y="230" data-s=".4" data-o="0">
+      <div class="lay eth" data-id="lEth"><span class="tag" data-id="tEth" data-txt>Ethernet · MAC: PLC → router</span>
+        <div class="lay ip" data-id="lIp"><span class="tag">IP · 10.0.0.1 → 10.0.0.9 · TTL</span>
+          <div class="lay tcp" data-id="lTcp"><span class="tag">TCP · ports · seq # · checksum</span>
+            <div class="note">OPEN VALVE<small>payload: 1 byte</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actor card small" data-id="ovh" data-x="640" data-y="440" data-o="0"><div class="lbl">📏 Message: <b>1 byte</b> · Paperwork: <b>54 bytes</b></div><div class="sub">(and Ethernet pads it to 64 anyway)</div></div>
+    <div class="actor bubble" data-id="rb" data-x="640" data-y="450" data-o="0">📖 Routing table: “10.0.0.9? That way!” <b>Fresh Ethernet label, please.</b></div>
+
+    <div class="actor letter" data-id="rc" data-x="1150" data-y="190" data-o="0"><b>ACK ✔</b>“Delivered. Signed: Valve.”</div>
+
+    <!-- lost parcel + retry -->
+    <div class="actor mini" data-id="pk2" data-x="150" data-y="230" data-o="0">📦 CLOSE VALVE</div>
+    <div class="actor" data-id="boom" data-x="600" data-y="230" data-s=".2" data-o="0"><div class="em">💥</div></div>
+    <div class="actor bubble" data-id="tmr" data-x="330" data-y="440" data-o="0" data-txt>⏱️ No receipt yet… waiting…</div>
+    <div class="actor mini" data-id="pk3" data-x="150" data-y="230" data-o="0">📦 CLOSE VALVE <small>(attempt 2)</small></div>
+  </div>
+
+  <div class="actor panel" data-id="verdict" data-x="640" data-y="300" data-o="0" style="width:780px">
+    <h3>Verdict: TCP/IP</h3>
+    <ul>
+      <li>✅ Carries literally anything, anywhere</li>
+      <li>✅ Guaranteed delivery (eventually)</li>
+      <li>❌ Paperwork, handshakes, re-labelling</li>
+      <li>❌ “Eventually” is not a timing guarantee</li>
+    </ul>
+  </div>
+
+  <div class="cap" id="cap"><h2 id="capT"></h2><p id="capP"></p></div>
+</div>
+
+<script src="assets/engine.js"></script>
+<script>
+Scene({
+  home: 'index.html', next: '2-profinet.html', nextLabel: 'Next scene',
+  steps: [
+    { title: 'The Bureaucracy', text: 'Mission: <b>tell a valve to open</b>. In the TCP/IP world nothing moves without paperwork. Grab a coffee and watch.', do: [] },
+
+    { title: 'Step 1 · Ask permission first',
+      text: 'Before a single byte of real data moves, they must agree to talk: <b>SYN, SYN-ACK, ACK</b> — the three-way handshake. A polite “is this a good time?” phone call before every parcel.',
+      do: [
+        { id: 'L1', o: 1, x: 900, dur: 1500, odur: 300 }, { id: 'L1', o: 0, delay: 1500, dur: 300 },
+        { id: 'L2', o: 1, x: 400, dur: 1500, delay: 1700, odur: 300 }, { id: 'L2', o: 0, delay: 3200, dur: 300 },
+        { id: 'L3', o: 1, x: 900, dur: 1500, delay: 3400, odur: 300 }, { id: 'L3', o: 0, delay: 4900, dur: 300 },
+      ] },
+
+    { title: 'Step 2 · Write the message',
+      text: 'Finally, the actual message: “open”. That is <b>one byte</b> of useful content. It is tiny. Remember that.',
+      do: [ { id: 'parcel', o: 1, s: .9, x: 400, y: 190, dur: 1000 } ] },
+
+    { title: 'Step 3 · Fill in the forms',
+      text: 'Three layers of paperwork: <b>TCP</b> (ports, sequence numbers), <b>IP</b> (addresses), <b>Ethernet</b> (MAC labels). About 54 bytes of forms for 1 byte of message. Nobody said it was efficient — it is <i>general</i>.',
+      do: [
+        { id: 'lTcp', cls: 'on' },
+        { id: 'lIp', cls: 'on', delay: 1200 },
+        { id: 'lEth', cls: 'on', delay: 2400 },
+        { id: 'ovh', o: 1, delay: 3300, dur: 600 },
+      ] },
+
+    { title: 'Step 4 · Through the front desk',
+      text: 'Every router on the way opens the outer envelope, reads the <b>IP address</b>, looks it up in the big book and sticks on a <b>fresh Ethernet label</b>. Every hop. Every time.',
+      do: [
+        { id: 'ovh', o: 0, dur: 300 },
+        { id: 'parcel', x: 640, y: 200, s: .5, dur: 1600 },
+        { id: 'rb', o: 1, delay: 1700, dur: 500 },
+        { id: 'tEth', t: 'Ethernet · MAC: router → valve', delay: 2800 },
+      ] },
+
+    { title: 'Step 5 · Delivery',
+      text: 'The valve opens the three envelopes from the outside in — and learns, at last: “<b>open</b>”. Total time to deliver one byte: <i>a while</i>.',
+      do: [
+        { id: 'rb', o: 0, dur: 300 },
+        { id: 'parcel', x: 1150, y: 200, s: .5, dur: 1400 },
+        { id: 'parcel', x: 1010, y: 175, s: .9, dur: 800, delay: 1500 },
+        { id: 'lEth', rm: 'on', delay: 2500 },
+        { id: 'lIp', rm: 'on', delay: 3100 },
+        { id: 'lTcp', rm: 'on', delay: 3700 },
+        { id: 'valveEm', t: '🚰💦', delay: 4200 },
+        { id: 'parcel', o: 0, delay: 4600, dur: 500 },
+      ] },
+
+    { title: 'Step 6 · Sign for it',
+      text: 'It is <b>registered mail</b>: the receiver signs and sends back a receipt (ACK). Reliable. Polite. Slow-ish.',
+      do: [ { id: 'rc', o: 1, x: 120, dur: 1800, odur: 400 }, { id: 'rc', o: 0, delay: 1900, dur: 400 } ] },
+
+    { title: 'And when a parcel gets lost?',
+      text: 'No problem. After a <b>timeout</b> the sender sends the whole thing again. TCP guarantees delivery… <i>eventually</i>. “Eventually” is not a unit of time a servo drive enjoys.',
+      do: [
+        { id: 'pk2', o: 1, x: 560, dur: 1200 },
+        { id: 'pk2', o: 0, delay: 1250, dur: 100 },
+        { id: 'boom', o: 1, s: 1.3, delay: 1250, dur: 300 },
+        { id: 'boom', o: 0, delay: 2300, dur: 500 },
+        { id: 'tmr', o: 1, delay: 1700, dur: 400 },
+        { id: 'tmr', t: '⏱️ Timeout! Sending it all again…', delay: 3300 },
+        { id: 'pk3', o: 1, x: 1150, dur: 1800, delay: 3800 },
+        { id: 'pk3', o: 0, delay: 5700, dur: 300 },
+        { id: 'valveEm', t: '🚰', delay: 5700 },
+        { id: 'tmr', o: 0, delay: 5700, dur: 300 },
+      ] },
+
+    { title: 'Verdict',
+      text: 'Great for web pages, e-mail, firmware downloads and cat videos 🐈. A bit too relaxed for a drive that wants an answer <b>every millisecond</b>. Next: someone in a hurry.',
+      do: [ { id: 'world', o: .12, dur: 600 }, { id: 'verdict', o: 1, dur: 600 } ] },
+  ]
+});
+</script>
+</body>
+</html>
