@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Internet vs PROFINET vs EtherCAT — explained with a bureaucrat, a courier and a sushi belt</title>
+<style>
+  :root{--bg:#fff7e8;--ink:#1f2330;--muted:#5b6275}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    background-image:radial-gradient(circle at 1px 1px,rgba(0,0,0,.08) 1.5px,transparent 0);background-size:28px 28px}
+  main{max-width:1000px;margin:0 auto;padding:40px 20px 60px}
+  h1{font-size:clamp(30px,5vw,52px);line-height:1.1;margin:0 0 12px}
+  .lead{font-size:clamp(18px,2.4vw,24px);color:var(--muted);margin:0 0 30px;line-height:1.4}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  a.card{display:block;text-decoration:none;color:inherit;background:#fff;border-radius:20px;padding:22px 24px;
+    border-top:10px solid var(--c);box-shadow:0 6px 20px rgba(0,0,0,.1);transition:transform .15s,box-shadow .15s}
+  a.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.16)}
+  .card .n{font-weight:800;color:var(--c);font-size:15px;letter-spacing:.5px}
+  .card .em{font-size:54px;line-height:1.2}
+  .card h2{margin:4px 0 6px;font-size:26px}
+  .card p{margin:0;color:var(--muted);font-size:17px;line-height:1.4}
+  .go{display:inline-block;margin:30px 0 0;background:#1f2330;color:#fff;text-decoration:none;font-weight:700;font-size:20px;padding:14px 28px;border-radius:30px}
+  .go:hover{background:#000}
+  footer{margin-top:34px;color:var(--muted);font-size:15px;line-height:1.5}
+  kbd{background:#fff;border:1px solid #cfd3de;border-bottom-width:2px;border-radius:6px;padding:1px 7px;font-size:14px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Same Ethernet cable.<br>Three very different philosophies.</h1>
+  <p class="lead">Internet (TCP/IP), PROFINET and EtherCAT explained with a <b>bureaucrat</b>, a <b>motorcycle courier</b> and a <b>sushi belt</b>. Click through each scene.</p>
+
+  <div class="grid">
+    <a class="card" style="--c:#e8590c" href="1-tcpip.html"><div class="n">SCENE 1</div><div class="em">🧑‍💼</div><h2>The Internet (TCP/IP)</h2><p>The bureaucracy: handshakes, three layers of forms, a receipt for everything.</p></a>
+    <a class="card" style="--c:#1971c2" href="2-profinet.html"><div class="n">SCENE 2</div><div class="em">🏍️</div><h2>PROFINET</h2><p>The motorcycle couriers: no forms, one rider per device, priority lane.</p></a>
+    <a class="card" style="--c:#099268" href="3-ethercat.html"><div class="n">SCENE 3</div><div class="em">🍣</div><h2>EtherCAT</h2><p>The sushi belt: one plate visits everyone and nobody makes it stop.</p></a>
+    <a class="card" style="--c:#7048e8" href="4-showdown.html"><div class="n">SCENE 4</div><div class="em">🏁</div><h2>The Showdown</h2><p>Same job, three ways. Who gets there first, and who do you call for which job?</p></a>
+  </div>
+
+  <a class="go" href="1-tcpip.html">Start the tour ▶</a>
+
+  <footer>
+    Keys inside a scene: <kbd>→</kbd> / <kbd>Space</kbd> / click = next · <kbd>←</kbd> = back · <kbd>H</kbd> = hide controls · <kbd>R</kbd> = restart.<br>
+    Illustrative, simplified analogies — the timings are typical orders of magnitude, not a benchmark.
+  </footer>
+</main>
+</body>
+</html>
