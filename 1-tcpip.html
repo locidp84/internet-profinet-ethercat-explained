@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="hu">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,51 +7,69 @@
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body class="tcp">
+<script src="assets/lang.js"></script>
 <div id="stage">
-  <div class="hdr"><div class="num">1</div><h1>The Internet (TCP/IP) <span>· The Bureaucracy</span></h1><div class="count" id="count"></div><div class="dots" id="dots"></div></div>
+  <div class="hdr"><div class="num">1</div>
+    <h1><span class="en">The Internet (TCP/IP)</span><span class="hu">Az Internet (TCP/IP)</span><span class="sec"> · <span class="en">The Bureaucracy</span><span class="hu">A bürokrácia</span></span></h1>
+    <div class="count" id="count"></div><div class="dots" id="dots"></div></div>
 
   <div id="world" data-id="world">
-    <div class="road" style="left:150px;top:325px;width:1000px"></div>
+    <!-- the S-shaped road through town -->
+    <svg class="layer" width="1280" height="720" viewBox="0 0 1280 720">
+      <path d="M170 150 H1105 A70 70 0 0 1 1105 290 H175 A70 70 0 0 0 175 430 H1095" fill="none" stroke="#c9cdda" stroke-width="26" stroke-linecap="round"/>
+      <path d="M170 150 H1105 A70 70 0 0 1 1105 290 H175 A70 70 0 0 0 175 430 H1095" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/>
+    </svg>
 
-    <div class="actor card bob" data-id="ctrl" data-x="120" data-y="330"><div class="em">🧠</div><div class="lbl">PLC</div><div class="sub">10.0.0.1</div></div>
-    <div class="actor card bob" data-id="router" data-x="640" data-y="330"><div class="em">🧑‍💼</div><div class="lbl">Router</div><div class="sub">“Information desk”</div></div>
-    <div class="actor card" data-id="valve" data-x="1150" data-y="330"><div class="em" data-id="valveEm" data-txt>🚰</div><div class="lbl">Valve</div><div class="sub">10.0.0.9</div></div>
+    <!-- two houses -->
+    <div class="actor card" data-id="hA" data-x="105" data-y="150"><div class="em">🏠</div><div class="lbl">🧠 PLC</div><div class="sub">10.0.0.1</div></div>
+    <div class="actor card" data-id="hB" data-x="1175" data-y="430"><div class="em">🏠</div><div class="lbl" data-id="valveL" data-txt>🚰 <span class="en">Valve</span><span class="hu">Szelep</span></div><div class="sub">10.0.0.9</div></div>
+
+    <!-- stations on the way -->
+    <div class="actor card small" data-id="sS1" data-x="620" data-y="150"><div class="em">🔀</div><div class="lbl">Switch</div><div class="sub"><span class="en">the doorman</span><span class="hu">a portás</span></div></div>
+    <div class="actor card small" data-id="sR1" data-x="850" data-y="290"><div class="em">🧑‍💼</div><div class="lbl">Router #1</div><div class="sub"><span class="en">a clerk</span><span class="hu">hivatalnok</span></div></div>
+    <div class="actor card small" data-id="sR2" data-x="400" data-y="290"><div class="em">🧑‍💼</div><div class="lbl">Router #2</div><div class="sub"><span class="en">a clerk</span><span class="hu">hivatalnok</span></div></div>
+    <div class="actor card small" data-id="sS2" data-x="640" data-y="430"><div class="em">🔀</div><div class="lbl">Switch</div><div class="sub"><span class="en">the doorman</span><span class="hu">a portás</span></div></div>
 
     <!-- handshake letters -->
-    <div class="actor letter" data-id="L1" data-x="300" data-y="190" data-o="0"><b>SYN</b>“May I send you something?”</div>
-    <div class="actor letter" data-id="L2" data-x="1000" data-y="190" data-o="0"><b>SYN-ACK</b>“Sure. May I send something back?”</div>
-    <div class="actor letter" data-id="L3" data-x="300" data-y="190" data-o="0"><b>ACK</b>“Yes, thanks. Sending now.”</div>
+    <div class="actor mini" data-id="L1" data-x="170" data-y="150" data-o="0">✉️ SYN</div>
+    <div class="actor mini" data-id="L2" data-x="1095" data-y="430" data-o="0">✉️ SYN-ACK</div>
+    <div class="actor mini" data-id="L3" data-x="170" data-y="150" data-o="0">✉️ ACK</div>
+
+    <!-- station bubbles -->
+    <div class="actor bubble" data-id="bS1" data-x="620" data-y="255" data-o="0" style="max-width:290px;font-size:16px"><span class="en">🚪 Switch: I only read the <b>MAC label</b>. I never open anything. “Move along!”</span><span class="hu">🚪 Switch: én csak a <b>MAC-címkét</b> nézem. Semmit nem bontok ki. „Mehet tovább!”</span></div>
+    <div class="actor bubble" data-id="bR1" data-x="850" data-y="178" data-o="0" style="max-width:300px;font-size:16px"><span class="en">🧑‍💼 Router: open the envelope, read the <b>IP address</b>, <b>TTL 64 → 63</b>, new Ethernet label. Next!</span><span class="hu">🧑‍💼 Router: kibontom, elolvasom az <b>IP-címet</b>, <b>TTL 64 → 63</b>, új Ethernet-címke. Következő!</span></div>
+    <div class="actor bubble" data-id="bR2" data-x="400" data-y="178" data-o="0" style="max-width:300px;font-size:16px"><span class="en">🧑‍💼 Same again: <b>TTL 63 → 62</b>. At zero the packet is binned: “Time To Live? Not anymore.”</span><span class="hu">🧑‍💼 Ugyanez: <b>TTL 63 → 62</b>. Nullánál a csomag kuka: „Time To Live? Már nem.”</span></div>
+    <div class="actor bubble" data-id="bS2" data-x="640" data-y="333" data-o="0" style="max-width:290px;font-size:16px"><span class="en">🚪 Switch again: MAC only. “Move along!”</span><span class="hu">🚪 Megint switch: csak a MAC. „Mehet tovább!”</span></div>
 
     <!-- the parcel -->
-    <div class="actor parcel" data-id="parcel" data-x="150" data-y="230" data-s=".4" data-o="0">
-      <div class="lay eth" data-id="lEth"><span class="tag" data-id="tEth" data-txt>Ethernet · MAC: PLC → router</span>
-        <div class="lay ip" data-id="lIp"><span class="tag">IP · 10.0.0.1 → 10.0.0.9 · TTL</span>
+    <div class="actor parcel" data-id="parcel" data-x="640" data-y="290" data-s="1" data-o="0">
+      <div class="lay eth" data-id="lEth"><span class="tag" data-id="tEth" data-txt>Ethernet · MAC: PLC → R1</span>
+        <div class="lay ip" data-id="lIp"><span class="tag" data-id="tIp" data-txt>IP · 10.0.0.1 → 10.0.0.9 · TTL 64</span>
           <div class="lay tcp" data-id="lTcp"><span class="tag">TCP · ports · seq # · checksum</span>
-            <div class="note">OPEN VALVE<small>payload: 1 byte</small></div>
+            <div class="note"><span class="en">OPEN VALVE</span><span class="hu">NYISS KI</span><small><span class="en">payload: 1 byte</span><span class="hu">tartalom: 1 bájt</span></small></div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="actor card small" data-id="ovh" data-x="640" data-y="440" data-o="0"><div class="lbl">📏 Message: <b>1 byte</b> · Paperwork: <b>54 bytes</b></div><div class="sub">(and Ethernet pads it to 64 anyway)</div></div>
-    <div class="actor bubble" data-id="rb" data-x="640" data-y="450" data-o="0">📖 Routing table: “10.0.0.9? That way!” <b>Fresh Ethernet label, please.</b></div>
-
-    <div class="actor letter" data-id="rc" data-x="1150" data-y="190" data-o="0"><b>ACK ✔</b>“Delivered. Signed: Valve.”</div>
+    <div class="actor mini" data-id="rc" data-x="1095" data-y="430" data-o="0">🧾 ACK ✔</div>
 
     <!-- lost parcel + retry -->
-    <div class="actor mini" data-id="pk2" data-x="150" data-y="230" data-o="0">📦 CLOSE VALVE</div>
-    <div class="actor" data-id="boom" data-x="600" data-y="230" data-s=".2" data-o="0"><div class="em">💥</div></div>
-    <div class="actor bubble" data-id="tmr" data-x="330" data-y="440" data-o="0" data-txt>⏱️ No receipt yet… waiting…</div>
-    <div class="actor mini" data-id="pk3" data-x="150" data-y="230" data-o="0">📦 CLOSE VALVE <small>(attempt 2)</small></div>
+    <div class="actor mini" data-id="pk2" data-x="170" data-y="150" data-o="0">📦 <span class="en">CLOSE VALVE</span><span class="hu">ZÁRD EL</span></div>
+    <div class="actor" data-id="boom" data-x="538" data-y="290" data-s=".2" data-o="0"><div class="em">💥</div></div>
+    <div class="actor bubble" data-id="tmr" data-x="170" data-y="258" data-o="0" data-txt style="max-width:260px;font-size:16px"><span class="en">⏱️ No receipt yet… waiting…</span><span class="hu">⏱️ Még nincs nyugta… várunk…</span></div>
+    <div class="actor mini" data-id="pk3" data-x="170" data-y="150" data-o="0">📦 <span class="en">CLOSE VALVE</span><span class="hu">ZÁRD EL</span> <small><span class="en">(attempt 2)</span><span class="hu">(2. próba)</span></small></div>
   </div>
 
+  <div class="actor card" data-id="ovh" data-x="640" data-y="503" data-o="0" style="padding:6px 16px"><div class="lbl"><span class="en">📏 Message: <b>1 byte</b> · Paperwork: <b>54 bytes</b></span><span class="hu">📏 Üzenet: <b>1 bájt</b> · Papírmunka: <b>54 bájt</b></span></div><div class="sub"><span class="en">(and Ethernet pads it to 64 anyway)</span><span class="hu">(az Ethernet amúgy is kitölti 64-re)</span></div></div>
+
   <div class="actor panel" data-id="verdict" data-x="640" data-y="300" data-o="0" style="width:780px">
-    <h3>Verdict: TCP/IP</h3>
+    <h3><span class="en">Verdict: TCP/IP</span><span class="hu">Értékelés: TCP/IP</span></h3>
     <ul>
-      <li>✅ Carries literally anything, anywhere</li>
-      <li>✅ Guaranteed delivery (eventually)</li>
-      <li>❌ Paperwork, handshakes, re-labelling</li>
-      <li>❌ “Eventually” is not a timing guarantee</li>
+      <li><span class="en">✅ Carries literally anything, anywhere</span><span class="hu">✅ Szó szerint bármit elvisz, bárhová</span></li>
+      <li><span class="en">✅ Guaranteed delivery (eventually)</span><span class="hu">✅ Garantált kézbesítés (előbb-utóbb)</span></li>
+      <li><span class="en">❌ Paperwork, handshakes, re-labelling</span><span class="hu">❌ Papírmunka, kézfogások, átcímkézés</span></li>
+      <li><span class="en">❌ “Eventually” is not a timing guarantee</span><span class="hu">❌ Az „előbb-utóbb” nem időgarancia</span></li>
     </ul>
   </div>
 
@@ -60,25 +78,112 @@
 
 <script src="assets/engine.js"></script>
 <script>
+// ---- the S-shaped road, as a polyline (same shape as the SVG path) ----
+const PTS = [[170,150],[1105,150],[1175,220],[1105,290],[175,290],[105,360],[175,430],[1095,430]];
+const CUM = [0];
+for (let i = 1; i < PTS.length; i++) CUM.push(CUM[i-1] + Math.hypot(PTS[i][0]-PTS[i-1][0], PTS[i][1]-PTS[i-1][1]));
+function at(d) {
+  d = Math.max(0, Math.min(CUM[CUM.length-1], d));
+  for (let i = 1; i < PTS.length; i++) if (d <= CUM[i]) {
+    const f = (d - CUM[i-1]) / (CUM[i] - CUM[i-1]);
+    return [PTS[i-1][0] + f*(PTS[i][0]-PTS[i-1][0]), PTS[i-1][1] + f*(PTS[i][1]-PTS[i-1][1])];
+  }
+  return PTS[PTS.length-1];
+}
+const END = CUM[CUM.length-1];
+const D = { S1: 450, R1: CUM[3] + 255, R2: CUM[3] + 705, S2: CUM[6] + 465 };
+const GAP = 115;           // the parcel waits this far before a station
+const PV = 0.65, HV = 1.6; // parcel speed, letter speed (px/ms)
+
+// tiny timeline builder: sequential actions with waits and moves along the road
+function TL() {
+  const it = []; let t = 0;
+  const api = {
+    it,
+    add(o, dt = 0) { it.push(Object.assign({ delay: Math.round(t + dt) }, o)); return api; },
+    wait(ms) { t += ms; return api; },
+    go(id, d0, d1, v) {
+      const dir = d1 >= d0 ? 1 : -1;
+      const inner = CUM.filter(c => dir > 0 ? (c > d0 && c < d1) : (c < d0 && c > d1));
+      if (dir < 0) inner.reverse();
+      const ds = [d0, ...inner, d1];
+      for (let k = 1; k < ds.length; k++) {
+        const [x, y] = at(ds[k]), dur = Math.round(Math.abs(ds[k] - ds[k-1]) / v);
+        it.push({ id, x, y, dur, delay: Math.round(t), ease: 'linear' });
+        t += dur;
+      }
+      return api;
+    }
+  };
+  return api;
+}
+
+const hs = TL()
+  .add({ id: 'L1', o: 1, dur: 150 }).go('L1', 0, END, HV).add({ id: 'L1', o: 0, dur: 200 }).wait(250)
+  .add({ id: 'L2', o: 1, dur: 150 }).go('L2', END, 0, HV).add({ id: 'L2', o: 0, dur: 200 }).wait(250)
+  .add({ id: 'L3', o: 1, dur: 150 }).go('L3', 0, END, HV).add({ id: 'L3', o: 0, dur: 200 });
+
+const s4 = TL()
+  .add({ id: 'ovh', o: 0, dur: 300 }).add({ id: 'world', o: 1, dur: 600 })
+  .add({ id: 'parcel', x: 170, y: 150, s: .38, dur: 1000 }).wait(1100)
+  .go('parcel', 0, D.S1 - GAP, PV)
+  .add({ id: 'bS1', o: 1, dur: 400 }).add({ id: 'sS1', cls: 'pulse' }).wait(2000)
+  .add({ id: 'bS1', o: 0, dur: 300 })
+  .go('parcel', D.S1 - GAP, D.R1 - GAP, PV);
+
+const s5 = TL()
+  .add({ id: 'bR1', o: 1, dur: 400 }).add({ id: 'sR1', cls: 'pulse' })
+  .add({ id: 'tIp', t: 'IP · 10.0.0.1 → 10.0.0.9 · TTL 63' }, 900).add({ id: 'tEth', t: 'Ethernet · MAC: R1 → R2' }, 900).wait(2600)
+  .add({ id: 'bR1', o: 0, dur: 300 })
+  .go('parcel', D.R1 - GAP, D.R2 - GAP, PV)
+  .add({ id: 'bR2', o: 1, dur: 400 }).add({ id: 'sR2', cls: 'pulse' })
+  .add({ id: 'tIp', t: 'IP · 10.0.0.1 → 10.0.0.9 · TTL 62' }, 900).add({ id: 'tEth', t: 'Ethernet · MAC: R2 → Valve' }, 900).wait(2600)
+  .add({ id: 'bR2', o: 0, dur: 300 })
+  .go('parcel', D.R2 - GAP, D.S2 - GAP, PV);
+
+const s6 = TL()
+  .add({ id: 'bS2', o: 1, dur: 400 }).add({ id: 'sS2', cls: 'pulse' }).wait(1800)
+  .add({ id: 'bS2', o: 0, dur: 300 })
+  .go('parcel', D.S2 - GAP, END, PV)
+  .add({ id: 'parcel', x: 985, y: 340, s: .85, dur: 800 }).wait(1000)
+  .add({ id: 'lEth', rm: 'on' }).wait(650).add({ id: 'lIp', rm: 'on' }).wait(650).add({ id: 'lTcp', rm: 'on' }).wait(550)
+  .add({ id: 'valveL', t: T('🚰💦 Valve', '🚰💦 Szelep') }).wait(700)
+  .add({ id: 'parcel', o: 0, dur: 500 });
+
+const s7 = TL()
+  .add({ id: 'rc', o: 1, dur: 150 }).go('rc', END, 0, HV).add({ id: 'rc', o: 0, dur: 250 });
+
+const s8 = TL()
+  .add({ id: 'pk2', o: 1, dur: 200 }).go('pk2', 0, 1700, 0.9)
+  .add({ id: 'pk2', o: 0, dur: 100 }).add({ id: 'boom', o: 1, s: 1.3, dur: 300 }).wait(500)
+  .add({ id: 'tmr', o: 1, dur: 400 }).wait(2000)
+  .add({ id: 'boom', o: 0, dur: 500 })
+  .add({ id: 'tmr', t: T('⏱️ Timeout! Sending it all again…', '⏱️ Timeout! Újraküldünk mindent…') }).wait(1600)
+  .add({ id: 'pk3', o: 1, dur: 200 }).go('pk3', 0, END, 0.9)
+  .add({ id: 'valveL', t: T('🚰 Valve', '🚰 Szelep') }).add({ id: 'pk3', o: 0, dur: 300 }).add({ id: 'tmr', o: 0, dur: 300 });
+
 Scene({
-  home: 'index.html', next: '2-profinet.html', nextLabel: 'Next scene',
+  home: 'index.html', next: '2-profinet.html', nextLabel: T('Next scene', 'Következő jelenet'),
+  pageTitle: T('1 · The Internet (TCP/IP) — The Bureaucracy', '1 · Az Internet (TCP/IP) — A bürokrácia'),
   steps: [
-    { title: 'The Bureaucracy', text: 'Mission: <b>tell a valve to open</b>. In the TCP/IP world nothing moves without paperwork. Grab a coffee and watch.', do: [] },
+    { title: T('The Bureaucracy', 'A bürokrácia'),
+      text: T('Mission: <b>tell a valve to open</b>. Two houses, one winding road, and every stop on the way wants its say. Grab a coffee.',
+              'Feladat: <b>meg kell mondani egy szelepnek, hogy nyisson ki</b>. Két ház, egy kanyargós út, és minden megállónál akar valaki valamit. Hozz egy kávét.'),
+      do: [] },
 
-    { title: 'Step 1 · Ask permission first',
-      text: 'Before a single byte of real data moves, they must agree to talk: <b>SYN, SYN-ACK, ACK</b> — the three-way handshake. A polite “is this a good time?” phone call before every parcel.',
-      do: [
-        { id: 'L1', o: 1, x: 900, dur: 1500, odur: 300 }, { id: 'L1', o: 0, delay: 1500, dur: 300 },
-        { id: 'L2', o: 1, x: 400, dur: 1500, delay: 1700, odur: 300 }, { id: 'L2', o: 0, delay: 3200, dur: 300 },
-        { id: 'L3', o: 1, x: 900, dur: 1500, delay: 3400, odur: 300 }, { id: 'L3', o: 0, delay: 4900, dur: 300 },
-      ] },
+    { title: T('Step 1 · Ask permission first', '1. lépés · Előbb engedélyt kérünk'),
+      text: T('Before a single byte of real data moves, the two houses must agree to talk: <b>SYN, SYN-ACK, ACK</b> — the three-way handshake. Three letters, each going <i>all the way</i> through town. Just to say “hello”.',
+              'Mielőtt egyetlen igazi bájt elindulna, a két háznak meg kell egyeznie, hogy beszélnek: <b>SYN, SYN-ACK, ACK</b> — a háromutas kézfogás. Három levél, mindegyik <i>végigmegy a városon</i>. Csak azért, hogy köszönjünk.'),
+      do: hs.it },
 
-    { title: 'Step 2 · Write the message',
-      text: 'Finally, the actual message: “open”. That is <b>one byte</b> of useful content. It is tiny. Remember that.',
-      do: [ { id: 'parcel', o: 1, s: .9, x: 400, y: 190, dur: 1000 } ] },
+    { title: T('Step 2 · Write the message', '2. lépés · Megírjuk az üzenetet'),
+      text: T('Finally, the actual message: “open”. That is <b>one byte</b> of useful content. It is tiny. Remember that.',
+              'Végre az igazi üzenet: „nyiss”. Ez <b>egyetlen bájt</b> hasznos tartalom. Pici. Jegyezd meg.'),
+      do: [ { id: 'world', o: .2, dur: 500 }, { id: 'parcel', o: 1, dur: 700 } ] },
 
-    { title: 'Step 3 · Fill in the forms',
-      text: 'Three layers of paperwork: <b>TCP</b> (ports, sequence numbers), <b>IP</b> (addresses), <b>Ethernet</b> (MAC labels). About 54 bytes of forms for 1 byte of message. Nobody said it was efficient — it is <i>general</i>.',
+    { title: T('Step 3 · Fill in the forms', '3. lépés · Kitöltjük az űrlapokat'),
+      text: T('Three layers of paperwork: <b>TCP</b> (ports, sequence numbers), <b>IP</b> (addresses, TTL), <b>Ethernet</b> (MAC labels). About 54 bytes of forms for 1 byte of message. Nobody said it was efficient — it is <i>general</i>.',
+              'Három réteg papírmunka: <b>TCP</b> (portok, sorszámok), <b>IP</b> (címek, TTL), <b>Ethernet</b> (MAC-címkék). Kb. 54 bájt űrlap 1 bájt üzenethez. Senki nem mondta, hogy hatékony — de <i>univerzális</i>.'),
       do: [
         { id: 'lTcp', cls: 'on' },
         { id: 'lIp', cls: 'on', delay: 1200 },
@@ -86,49 +191,34 @@ Scene({
         { id: 'ovh', o: 1, delay: 3300, dur: 600 },
       ] },
 
-    { title: 'Step 4 · Through the front desk',
-      text: 'Every router on the way opens the outer envelope, reads the <b>IP address</b>, looks it up in the big book and sticks on a <b>fresh Ethernet label</b>. Every hop. Every time.',
-      do: [
-        { id: 'ovh', o: 0, dur: 300 },
-        { id: 'parcel', x: 640, y: 200, s: .5, dur: 1600 },
-        { id: 'rb', o: 1, delay: 1700, dur: 500 },
-        { id: 'tEth', t: 'Ethernet · MAC: router → valve', delay: 2800 },
-      ] },
+    { title: T('Step 4 · The doorman (switch)', '4. lépés · A portás (switch)'),
+      text: T('The first stop is a <b>switch</b>: a doorman who only looks at the <b>MAC label</b> and waves you on. He never opens anything and never changes anything.',
+              'Az első megálló egy <b>switch</b>: egy portás, aki csak a <b>MAC-címkét</b> nézi, és tovább int. Nem bont ki semmit, nem ír át semmit.'),
+      do: s4.it },
 
-    { title: 'Step 5 · Delivery',
-      text: 'The valve opens the three envelopes from the outside in — and learns, at last: “<b>open</b>”. Total time to deliver one byte: <i>a while</i>.',
-      do: [
-        { id: 'rb', o: 0, dur: 300 },
-        { id: 'parcel', x: 1150, y: 200, s: .5, dur: 1400 },
-        { id: 'parcel', x: 1010, y: 175, s: .9, dur: 800, delay: 1500 },
-        { id: 'lEth', rm: 'on', delay: 2500 },
-        { id: 'lIp', rm: 'on', delay: 3100 },
-        { id: 'lTcp', rm: 'on', delay: 3700 },
-        { id: 'valveEm', t: '🚰💦', delay: 4200 },
-        { id: 'parcel', o: 0, delay: 4600, dur: 500 },
-      ] },
+    { title: T('Step 5 · The clerks (routers)', '5. lépés · A hivatalnokok (routerek)'),
+      text: T('Every <b>router</b> opens the outer envelope, reads the <b>IP address</b>, looks it up in the big book, knocks <b>1 off the TTL</b> and sticks on a <b>fresh Ethernet label</b>. Every hop. Every time.',
+              'Minden <b>router</b> kibontja a külső borítékot, elolvassa az <b>IP-címet</b>, megnézi a nagy könyvben, levon <b>egyet a TTL-ből</b>, és ráragaszt egy <b>új Ethernet-címkét</b>. Minden ugrásnál. Minden alkalommal.'),
+      do: s5.it },
 
-    { title: 'Step 6 · Sign for it',
-      text: 'It is <b>registered mail</b>: the receiver signs and sends back a receipt (ACK). Reliable. Polite. Slow-ish.',
-      do: [ { id: 'rc', o: 1, x: 120, dur: 1800, odur: 400 }, { id: 'rc', o: 0, delay: 1900, dur: 400 } ] },
+    { title: T('Step 6 · Delivery', '6. lépés · Kézbesítés'),
+      text: T('One more doorman, and the parcel is home. The valve opens three envelopes from the outside in — and learns, at last: “<b>open</b>”. Total time for one byte: <i>a while</i>.',
+              'Még egy portás, és a csomag otthon van. A szelep kívülről befelé kibont három borítékot — és végre megtudja: „<b>nyiss</b>”. Egy bájt kézbesítési ideje: <i>jócskán</i>.'),
+      do: s6.it },
 
-    { title: 'And when a parcel gets lost?',
-      text: 'No problem. After a <b>timeout</b> the sender sends the whole thing again. TCP guarantees delivery… <i>eventually</i>. “Eventually” is not a unit of time a servo drive enjoys.',
-      do: [
-        { id: 'pk2', o: 1, x: 560, dur: 1200 },
-        { id: 'pk2', o: 0, delay: 1250, dur: 100 },
-        { id: 'boom', o: 1, s: 1.3, delay: 1250, dur: 300 },
-        { id: 'boom', o: 0, delay: 2300, dur: 500 },
-        { id: 'tmr', o: 1, delay: 1700, dur: 400 },
-        { id: 'tmr', t: '⏱️ Timeout! Sending it all again…', delay: 3300 },
-        { id: 'pk3', o: 1, x: 1150, dur: 1800, delay: 3800 },
-        { id: 'pk3', o: 0, delay: 5700, dur: 300 },
-        { id: 'valveEm', t: '🚰', delay: 5700 },
-        { id: 'tmr', o: 0, delay: 5700, dur: 300 },
-      ] },
+    { title: T('Step 7 · Sign for it', '7. lépés · Átvételi elismervény'),
+      text: T('It is <b>registered mail</b>: the receiver signs and the receipt (ACK) travels all the way back through town. Reliable. Polite. Slow-ish.',
+              'Ez <b>tértivevényes ajánlott levél</b>: a címzett aláír, és az elismervény (ACK) visszamegy az egész városon át. Megbízható. Udvarias. Kicsit lassú.'),
+      do: s7.it },
 
-    { title: 'Verdict',
-      text: 'Great for web pages, e-mail, firmware downloads and cat videos 🐈. A bit too relaxed for a drive that wants an answer <b>every millisecond</b>. Next: someone in a hurry.',
+    { title: T('And when a parcel gets lost?', 'És ha elvész a csomag?'),
+      text: T('No problem. The sender notices the missing receipt, waits for a <b>timeout</b> and sends the whole thing again. TCP guarantees delivery… <i>eventually</i>. “Eventually” is not a unit of time a servo drive enjoys.',
+              'Semmi gond. A feladó észreveszi, hogy nincs nyugta, vár egy <b>timeoutot</b>, aztán az egészet újraküldi. A TCP garantálja a kézbesítést… <i>előbb-utóbb</i>. Az „előbb-utóbb” nem az az időegység, amit egy szervóhajtás szeret.'),
+      do: s8.it },
+
+    { title: T('Verdict', 'Értékelés'),
+      text: T('Great for web pages, e-mail, firmware downloads and cat videos 🐈. A bit too relaxed for a drive that wants an answer <b>every millisecond</b>. Next: someone in a hurry.',
+              'Remek weboldalakhoz, e-mailhez, firmware-letöltéshez és cicás videókhoz 🐈. Kicsit lazább annál, mint amit egy hajtás kíván, ami <b>ezredmásodpercenként</b> választ vár. Jöjjön valaki, akinek sietős.'),
       do: [ { id: 'world', o: .12, dur: 600 }, { id: 'verdict', o: 1, dur: 600 } ] },
   ]
 });
