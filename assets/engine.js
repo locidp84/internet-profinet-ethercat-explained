@@ -122,10 +122,6 @@
       `<button id="bLang" title="EN / HU">${pick(UI.lang)}</button>` +
       `<button id="bHide" title="H">${pick(UI.hide)}</button>`;
     document.body.appendChild(ctl);
-    const hint = document.createElement('div');
-    hint.className = 'hint';
-    hint.textContent = pick(UI.hint);
-    document.body.appendChild(hint);
 
     function controls() {
       const last = i === steps.length - 1;
@@ -147,7 +143,7 @@
     $('#bBack').onclick = e => { e.stopPropagation(); back(); };
     $('#bRestart').onclick = e => { e.stopPropagation(); goto(0); };
     $('#bLang').onclick = e => { e.stopPropagation(); switchLang(); };
-    $('#bHide').onclick = e => { e.stopPropagation(); ctl.classList.add('hidden'); };
+    $('#bHide').onclick = e => { e.stopPropagation(); ctl.classList.add('hidden'); fit(); };
     ctl.addEventListener('click', e => e.stopPropagation());
     stage.addEventListener('click', next);
 
@@ -156,15 +152,21 @@
       if (k === 'ArrowRight' || k === ' ' || k === 'Enter' || k === 'PageDown') { e.preventDefault(); next(); }
       else if (k === 'ArrowLeft' || k === 'Backspace' || k === 'PageUp') { e.preventDefault(); back(); }
       else if (k === 'r' || k === 'R') goto(0);
-      else if (k === 'h' || k === 'H') ctl.classList.toggle('hidden');
+      else if (k === 'h' || k === 'H') { ctl.classList.toggle('hidden'); fit(); }
       else if (k === 'Home') goto(0);
       else if (k === 'End') goto(steps.length - 1);
     });
 
     if (/[?&]clean/.test(location.search)) document.body.classList.add('clean');
 
+    // The stage is fitted into the space ABOVE the control bar, so the bar never covers the captions.
+    // Hide the bar (H) and the stage grows to fill the whole window.
     function fit() {
-      const k = Math.min(innerWidth / 1280, innerHeight / 720);
+      const barOff = document.body.classList.contains('clean') || ctl.classList.contains('hidden');
+      const bar = barOff ? 0 : ctl.offsetHeight + 16;
+      const availH = innerHeight - bar;
+      const k = Math.min(innerWidth / 1280, availH / 720);
+      stage.style.top = (availH / 2) + 'px';
       stage.style.transform = `translate(-50%,-50%) scale(${k})`;
     }
     window.addEventListener('resize', fit); fit();
@@ -172,6 +174,7 @@
     let start = parseInt((location.hash || '').slice(1), 10);
     if (isNaN(start)) start = 1;
     goto(Math.min(start, steps.length) - 1, true);
+    fit(); // again, now that the button labels exist and the bar has its real height
     window.__scene = { goto, next, back };
     return window.__scene;
   }
