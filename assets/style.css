@@ -24,7 +24,10 @@ html,body{margin:0;height:100%;background:#12141c;overflow:hidden;
 .hdr .num{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--accent);
   font-weight:800;font-size:22px;display:grid;place-items:center}
 .hdr h1{margin:0;font-size:27px;font-weight:700;letter-spacing:.2px}
-.hdr h1 span{font-weight:500;opacity:.9}
+.hdr h1 .sec{font-weight:500;opacity:.9}
+body.lang-en .hu{display:none!important}
+body.lang-hu .en{display:none!important}
+.mini small{font-weight:600;font-size:13px;color:var(--muted)}
 .hdr .count{margin-left:auto;font-size:18px;font-weight:600;opacity:.9}
 .dots{display:flex;gap:7px;align-items:center}
 .dots i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.35);transition:.3s}
