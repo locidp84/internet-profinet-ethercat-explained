@@ -1,15 +1,29 @@
-/* Tiny step-by-step animation engine.
+/* Tiny step-by-step animation engine (needs lang.js first).
  *
  * Elements with data-id are "actors". Position-able actors have data-x / data-y (centre of the element
  * in stage pixels), optional data-s (scale), data-r (rotation), data-o (opacity).
- * Elements with data-txt can have their innerHTML replaced ("t").
+ * Elements with data-txt can have their innerHTML replaced ("t"); t may be T('english','magyar').
  *
- * A step = { title, text, do: [ items ] }.  An item = { id, x,y,s,r,o, dur, delay, ease, t, cls, rm }.
+ * A step = { title, text, do: [ items ] } (title/text are T(...) pairs).
+ * An item = { id, x,y,s,r,o, dur, delay, ease, t, cls, rm }.
  * Going to step N = reset everything, instantly apply steps 0..N-1, then animate step N.
  * That makes "Back" and jumping around (#3 in the URL) work for free.
  */
 (function () {
   const $ = (s, r = document) => r.querySelector(s);
+  const UI = {
+    menu: T('⌂ Menu', '⌂ Menü'),
+    back: T('◀ Back', '◀ Vissza'),
+    prev: T('◀ Previous scene', '◀ Előző jelenet'),
+    next: T('Next ▶', 'Tovább ▶'),
+    restart: T('↻ Restart', '↻ Újra'),
+    hide: T('Hide controls', 'Vezérlők elrejtése'),
+    lang: T('🌐 Magyar', '🌐 English'),
+    hint: T('→ / Space / click = next · ← = back · H = hide controls · R = restart',
+            '→ / Szóköz / kattintás = tovább · ← = vissza · H = vezérlők elrejtése · R = újra'),
+    menuLast: T('Menu', 'Menü'),
+  };
+  const go = url => { location.href = withLang(url); };
 
   function Scene(cfg) {
     const stage = $('#stage');
@@ -17,6 +31,8 @@
     const els = {};
     let i = 0;
     let timers = [];
+
+    if (cfg.pageTitle) document.title = pick(cfg.pageTitle);
 
     document.querySelectorAll('[data-id]').forEach(el => {
       const d = el.dataset;
@@ -47,7 +63,7 @@
       for (const k of ['x', 'y', 's', 'r', 'o']) if (it[k] !== undefined) e.st[k] = it[k];
       const dur = animate ? (it.dur !== undefined ? it.dur : 900) : 0;
       render(e, dur, it.ease || 'ease-in-out', it.odur);
-      if (it.t !== undefined) e.el.innerHTML = it.t;
+      if (it.t !== undefined) e.el.innerHTML = pick(it.t);
       if (it.cls) it.cls.split(' ').forEach(c => e.el.classList.add(c));
       if (it.rm) it.rm.split(' ').forEach(c => e.el.classList.remove(c));
     }
@@ -78,13 +94,13 @@
       });
       i = n;
       caption(); dots(); controls();
-      try { history.replaceState(null, '', '#' + (n + 1)); } catch (e) { }
+      try { history.replaceState(null, '', location.search + '#' + (n + 1)); } catch (e) { }
     }
 
     function caption() {
       const s = steps[i], cap = $('#cap');
-      $('#capT').innerHTML = s.title || '';
-      $('#capP').innerHTML = s.text || '';
+      $('#capT').innerHTML = pick(s.title) || '';
+      $('#capP').innerHTML = pick(s.text) || '';
       cap.classList.remove('pop'); void cap.offsetWidth; cap.classList.add('pop');
     }
 
@@ -99,36 +115,38 @@
     const ctl = document.createElement('div');
     ctl.className = 'ctl'; ctl.id = 'ctl';
     ctl.innerHTML =
-      `<a href="${cfg.home || 'index.html'}" title="Menu">⌂ Menu</a>` +
-      `<button id="bBack">◀ Back</button>` +
-      `<button id="bNext" class="primary">Next ▶</button>` +
-      `<button id="bRestart" title="R">↻ Restart</button>` +
-      `<button id="bHide" title="H">Hide controls</button>`;
+      `<a href="${withLang(cfg.home || 'index.html')}">${pick(UI.menu)}</a>` +
+      `<button id="bBack"></button>` +
+      `<button id="bNext" class="primary"></button>` +
+      `<button id="bRestart" title="R">${pick(UI.restart)}</button>` +
+      `<button id="bLang" title="EN / HU">${pick(UI.lang)}</button>` +
+      `<button id="bHide" title="H">${pick(UI.hide)}</button>`;
     document.body.appendChild(ctl);
     const hint = document.createElement('div');
     hint.className = 'hint';
-    hint.textContent = '→ / Space / click = next · ← = back · H = hide controls · R = restart';
+    hint.textContent = pick(UI.hint);
     document.body.appendChild(hint);
 
     function controls() {
       const last = i === steps.length - 1;
-      $('#bNext').textContent = last ? (cfg.nextLabel || 'Menu') + ' ▶' : 'Next ▶';
+      $('#bNext').textContent = last ? pick(cfg.nextLabel || UI.menuLast) + ' ▶' : pick(UI.next);
       $('#bBack').style.visibility = (i === 0 && !cfg.prev) ? 'hidden' : 'visible';
-      $('#bBack').textContent = (i === 0 && cfg.prev) ? '◀ Previous scene' : '◀ Back';
+      $('#bBack').textContent = pick((i === 0 && cfg.prev) ? UI.prev : UI.back);
     }
 
     function next() {
       if (i < steps.length - 1) goto(i + 1);
-      else location.href = cfg.next || cfg.home || 'index.html';
+      else go(cfg.next || cfg.home || 'index.html');
     }
     function back() {
       if (i > 0) goto(i - 1);
-      else if (cfg.prev) location.href = cfg.prev + '#99';
+      else if (cfg.prev) go(cfg.prev + '#99');
     }
 
     $('#bNext').onclick = e => { e.stopPropagation(); next(); };
     $('#bBack').onclick = e => { e.stopPropagation(); back(); };
     $('#bRestart').onclick = e => { e.stopPropagation(); goto(0); };
+    $('#bLang').onclick = e => { e.stopPropagation(); switchLang(); };
     $('#bHide').onclick = e => { e.stopPropagation(); ctl.classList.add('hidden'); };
     ctl.addEventListener('click', e => e.stopPropagation());
     stage.addEventListener('click', next);
