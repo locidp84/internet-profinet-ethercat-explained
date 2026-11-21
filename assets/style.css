@@ -1,0 +1,119 @@
+/* Internet vs PROFINET vs EtherCAT — shared styles. 16:9 stage (1280x720), scaled to fit. */
+:root{
+  --bg:#fff7e8; --ink:#1f2330; --muted:#5b6275; --accent:#e8590c; --card:#ffffff;
+  --c-valve:#74c0fc; --c-drive:#ffd43b; --c-heater:#ff8787; --c-lamp:#8ce99a;
+}
+body.tcp{--accent:#e8590c}
+body.pn{--accent:#1971c2}
+body.ec{--accent:#099268}
+body.race{--accent:#7048e8}
+
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#12141c;overflow:hidden;
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;
+  transform:translate(-50%,-50%);transform-origin:center center;overflow:hidden;
+  background-color:var(--bg);
+  background-image:radial-gradient(circle at 1px 1px, rgba(0,0,0,.08) 1.5px, transparent 0);
+  background-size:28px 28px}
+
+/* header */
+.hdr{position:absolute;left:0;top:0;width:1280px;height:64px;background:var(--accent);color:#fff;
+  display:flex;align-items:center;gap:16px;padding:0 32px;z-index:50;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.hdr .num{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--accent);
+  font-weight:800;font-size:22px;display:grid;place-items:center}
+.hdr h1{margin:0;font-size:27px;font-weight:700;letter-spacing:.2px}
+.hdr h1 span{font-weight:500;opacity:.9}
+.hdr .count{margin-left:auto;font-size:18px;font-weight:600;opacity:.9}
+.dots{display:flex;gap:7px;align-items:center}
+.dots i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.35);transition:.3s}
+.dots i.done{background:rgba(255,255,255,.75)}
+.dots i.cur{background:#fff;transform:scale(1.45)}
+
+/* caption */
+.cap{position:absolute;left:32px;right:32px;top:544px;height:168px;background:#fff;border-radius:18px;
+  border-left:10px solid var(--accent);box-shadow:0 6px 24px rgba(0,0,0,.14);padding:12px 28px 10px;z-index:50;
+  display:flex;flex-direction:column;justify-content:center}
+.cap h2{margin:0 0 4px;font-size:32px;line-height:1.15;color:var(--accent)}
+.cap p{margin:0;font-size:23px;line-height:1.36;color:#2a3045}
+.cap b{color:#000}
+.cap.pop{animation:pop .4s ease-out}
+@keyframes pop{from{opacity:.0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* actors */
+.actor{position:absolute;left:0;top:0;will-change:transform,opacity;text-align:center;white-space:nowrap;z-index:5}
+.actor .em{font-size:64px;line-height:1.05}
+.actor .lbl{font-weight:800;font-size:19px;margin-top:2px}
+.actor .sub{font-size:14px;color:var(--muted);font-weight:600}
+.card{background:#fff;border-radius:16px;padding:10px 16px;box-shadow:0 4px 14px rgba(0,0,0,.14);border:2px solid #e6e8ef}
+.card.small{padding:6px 12px}
+.card.small .em{font-size:42px}
+.card.small .lbl{font-size:16px}
+.card.small .sub{font-size:13px}
+.card.off{opacity:.3;filter:grayscale(1)}
+.bob .em{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.pulse .em{animation:pulse .5s ease-in-out 3}
+@keyframes pulse{50%{transform:scale(1.25)}}
+
+/* speech bubbles / letters */
+.bubble{background:#fff;border:3px solid var(--accent);border-radius:16px;padding:8px 14px;font-size:18px;font-weight:600;
+  line-height:1.25;box-shadow:0 4px 14px rgba(0,0,0,.16);white-space:normal;max-width:380px;z-index:20}
+.bubble b{color:var(--accent)}
+.bubble.wide{max-width:420px}
+.letter{background:#fffdf5;border:3px solid #333;border-radius:10px;padding:6px 12px;font-size:17px;font-weight:600;
+  line-height:1.2;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:20;white-space:normal;width:270px}
+.letter b{display:block;font-size:19px;color:var(--accent)}
+.mini{background:#fff;border:3px solid var(--accent);border-radius:12px;padding:4px 12px;font-weight:800;font-size:18px;z-index:20;box-shadow:0 3px 10px rgba(0,0,0,.2)}
+
+/* roads */
+.road{position:absolute;height:10px;border-radius:5px;background:repeating-linear-gradient(90deg,#a3a9bd 0 22px,transparent 22px 40px);opacity:.75}
+svg.layer{position:absolute;left:0;top:0;pointer-events:none}
+
+/* parcel (TCP scene) */
+.parcel{z-index:15}
+.lay{position:relative;border:3px solid transparent;border-radius:12px;padding:0;
+  transition:padding .5s ease,background .5s,border-color .5s}
+.lay>.tag{position:absolute;left:10px;top:5px;font-size:13px;font-weight:800;opacity:0;transition:opacity .5s;white-space:nowrap}
+.lay.on{padding:28px 12px 12px}
+.lay.on>.tag{opacity:1}
+.lay.tcp.on{background:#ffe3d1;border-color:#e8590c}
+.lay.ip.on{background:#fff3bf;border-color:#f59f00}
+.lay.eth.on{background:#d3f9d8;border-color:#2f9e44}
+.lay.tcp.on>.tag{color:#c2410c}.lay.ip.on>.tag{color:#a16207}.lay.eth.on>.tag{color:#1e7a34}
+.note{background:#fff;border:3px solid #333;border-radius:8px;min-width:220px;padding:8px 10px;font-weight:800;font-size:20px;line-height:1.15}
+.note small{display:block;font-weight:600;font-size:13px;color:var(--muted)}
+
+/* PROFINET couriers */
+.cour{z-index:12}
+.cour .em{font-size:44px;line-height:1}
+.cour .tagc{display:inline-block;font-weight:800;font-size:14px;padding:1px 9px;border-radius:9px;border:2px solid #333;margin-bottom:1px}
+.flip .em{display:inline-block;transform:scaleX(-1)}
+
+/* EtherCAT plate */
+.plate{display:flex;height:58px;border-radius:30px;background:#fff;border:3px solid #333;overflow:hidden;box-shadow:0 5px 14px rgba(0,0,0,.25);z-index:14}
+.plate .ph{width:84px;display:grid;place-items:center;font-size:12px;font-weight:800;background:#eceff4;color:#333;line-height:1.1}
+.plate .cell{width:54px;display:grid;place-items:center;font-size:13px;font-weight:800;border-left:3px solid #333;transition:background .3s}
+.plate .cell.flash{animation:flash .6s ease-out}
+@keyframes flash{0%{box-shadow:inset 0 0 0 40px #fff}100%{box-shadow:inset 0 0 0 0 #fff}}
+.belt{fill:none;stroke:#9aa1b5;stroke-width:18;stroke-linecap:butt;stroke-dasharray:16 10;animation:belt 1.2s linear infinite}
+@keyframes belt{to{stroke-dashoffset:-26}}
+
+/* overlay cards (verdicts etc.) */
+.panel{background:#fff;border-radius:22px;box-shadow:0 10px 34px rgba(0,0,0,.22);padding:20px 30px;z-index:30;white-space:normal;text-align:left;border:3px solid var(--accent)}
+.panel h3{margin:0 0 8px;font-size:28px;color:var(--accent)}
+.panel ul{margin:0;padding:0;list-style:none;font-size:23px;line-height:1.5;font-weight:600}
+.panel li{margin:2px 0}
+.panel small{display:block;margin-top:8px;color:var(--muted);font-size:16px;font-weight:600}
+
+/* controls */
+.ctl{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);display:flex;gap:8px;padding:7px 9px;border-radius:30px;
+  background:rgba(20,22,32,.82);z-index:100;backdrop-filter:blur(6px);transition:opacity .25s}
+.ctl button,.ctl a{font:600 15px "Segoe UI",system-ui,sans-serif;color:#fff;background:rgba(255,255,255,.14);border:0;border-radius:20px;
+  padding:8px 16px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.ctl button:hover,.ctl a:hover{background:rgba(255,255,255,.28)}
+.ctl .primary{background:var(--accent)}
+.ctl.hidden{opacity:0;pointer-events:none}
+.hint{position:fixed;right:12px;top:10px;color:#9aa;font:12px "Segoe UI",sans-serif;z-index:100;opacity:.8}
+body.clean .ctl,body.clean .hint{display:none}
