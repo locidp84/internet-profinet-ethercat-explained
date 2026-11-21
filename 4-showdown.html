@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="hu">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -17,8 +17,11 @@
 </style>
 </head>
 <body class="race">
+<script src="assets/lang.js"></script>
 <div id="stage">
-  <div class="hdr"><div class="num">4</div><h1>The Showdown <span>· same job, three ways</span></h1><div class="count" id="count"></div><div class="dots" id="dots"></div></div>
+  <div class="hdr"><div class="num">4</div>
+    <h1><span class="en">The Showdown</span><span class="hu">A nagy összecsapás</span><span class="sec"> · <span class="en">same job, three ways</span><span class="hu">ugyanaz a feladat, háromféleképp</span></span></h1>
+    <div class="count" id="count"></div><div class="dots" id="dots"></div></div>
 
   <div id="world" data-id="world">
     <!-- lanes -->
@@ -30,7 +33,7 @@
     <div class="actor card small" data-id="lPn" data-x="150" data-y="295"><div class="em">🏍️</div><div class="lbl">PROFINET RT</div></div>
     <div class="actor card small" data-id="lEc" data-x="150" data-y="430"><div class="em">🍣</div><div class="lbl">EtherCAT</div></div>
 
-    <div class="actor" data-id="f1" data-x="1215" data-y="175" data-s="1"><div class="em" style="font-size:52px">🏁</div></div>
+    <div class="actor" data-id="f1" data-x="1215" data-y="175"><div class="em" style="font-size:52px">🏁</div></div>
     <div class="actor" data-id="f2" data-x="1215" data-y="310"><div class="em" style="font-size:52px">🏁</div></div>
     <div class="actor" data-id="f3" data-x="1215" data-y="445"><div class="em" style="font-size:52px">🏁</div></div>
 
@@ -38,25 +41,25 @@
     <div class="actor flip" data-id="rPn" data-x="330" data-y="295"><div class="em" style="font-size:56px">🏍️</div></div>
     <div class="actor" data-id="rEc" data-x="330" data-y="430"><div class="em" style="font-size:56px">🍣</div></div>
 
-    <div class="actor bubble" data-id="say" data-x="620" data-y="108" data-o="0" data-txt style="font-size:17px">Handshake first…</div>
+    <div class="actor bubble" data-id="say" data-x="620" data-y="108" data-o="0" data-txt style="font-size:17px"><span class="en">Handshake first…</span><span class="hu">Előbb a kézfogás…</span></div>
 
-    <div class="actor mini" data-id="bTcp" data-x="1060" data-y="108" data-o="0" style="border-color:#e8590c">🐌 10 ms… “eventually”</div>
+    <div class="actor mini" data-id="bTcp" data-x="1060" data-y="108" data-o="0" style="border-color:#e8590c">🐌 <span class="en">10 ms… “eventually”</span><span class="hu">10 ms… „előbb-utóbb”</span></div>
     <div class="actor mini" data-id="bPn" data-x="1075" data-y="243" data-o="0" style="border-color:#1971c2">✅ ≈ 1 ms</div>
-    <div class="actor mini" data-id="bEc" data-x="1075" data-y="378" data-o="0" style="border-color:#099268">🏆 ≈ 0.1 ms</div>
+    <div class="actor mini" data-id="bEc" data-x="1075" data-y="378" data-o="0" style="border-color:#099268">🏆 <span class="en">≈ 0.1 ms</span><span class="hu">≈ 0,1 ms</span></div>
   </div>
 
   <div class="actor panel" data-id="score" data-x="640" data-y="295" data-o="0" style="width:960px">
-    <h3>Scoreboard <small style="display:inline;font-size:16px;margin-left:10px">(typical orders of magnitude, log scale — not a benchmark)</small></h3>
-    <div class="row"><span class="nm">EtherCAT</span><span class="barbox"><div class="bar" style="width:70px;background:#099268"></div></span><span class="tm">≈ 0.1 ms</span></div>
+    <h3><span class="en">Scoreboard</span><span class="hu">Eredményjelző</span> <small style="display:inline;font-size:16px;margin-left:10px"><span class="en">(typical orders of magnitude, log scale — not a benchmark)</span><span class="hu">(tipikus nagyságrendek, logaritmikus skála — nem mérés)</span></small></h3>
+    <div class="row"><span class="nm">EtherCAT</span><span class="barbox"><div class="bar" style="width:70px;background:#099268"></div></span><span class="tm"><span class="en">≈ 0.1 ms</span><span class="hu">≈ 0,1 ms</span></span></div>
     <div class="row"><span class="nm">PROFINET RT</span><span class="barbox"><div class="bar" style="width:230px;background:#1971c2"></div></span><span class="tm">≈ 1 ms</span></div>
-    <div class="row"><span class="nm">TCP/IP</span><span class="barbox"><div class="bar" style="width:440px;background:linear-gradient(90deg,#e8590c 60%,rgba(232,89,12,0))"></div></span><span class="tm">10 ms … no promises</span></div>
+    <div class="row"><span class="nm">TCP/IP</span><span class="barbox"><div class="bar" style="width:440px;background:linear-gradient(90deg,#e8590c 60%,rgba(232,89,12,0))"></div></span><span class="tm"><span class="en">10 ms … no promises</span><span class="hu">10 ms … semmi ígéret</span></span></div>
   </div>
 
   <div class="actor panel" data-id="use" data-x="640" data-y="295" data-o="0" style="width:1020px">
-    <div class="use"><span class="ic">🧑‍💼</span><span><b>TCP/IP</b> — device web pages, firmware updates, OPC UA, SCADA, cloud. Anything that can wait a moment.</span></div>
-    <div class="use"><span class="ic">🏍️</span><span><b>PROFINET</b> — everyday machine I/O: PLC ↔ drives, valves, I/O blocks, on ordinary switches.</span></div>
-    <div class="use"><span class="ic">🍣</span><span><b>EtherCAT</b> — many axes in tight sync: motion control, robots, fast machines.</span></div>
-    <small>They are not enemies: on a real machine they often share one cable. (Your PROFINET drive still has a TCP/IP web page.)</small>
+    <div class="use"><span class="ic">🧑‍💼</span><span><b>TCP/IP</b> — <span class="en">device web pages, firmware updates, OPC UA, SCADA, cloud. Anything that can wait a moment.</span><span class="hu">eszközök weboldala, firmware-frissítés, OPC UA, SCADA, felhő. Bármi, ami elvár egy kis várakozást.</span></span></div>
+    <div class="use"><span class="ic">🏍️</span><span><b>PROFINET</b> — <span class="en">everyday machine I/O: PLC ↔ drives, valves, I/O blocks, on ordinary switches.</span><span class="hu">a mindennapi gépi I/O: PLC ↔ hajtások, szelepek, I/O-blokkok, hagyományos switcheken.</span></span></div>
+    <div class="use"><span class="ic">🍣</span><span><b>EtherCAT</b> — <span class="en">many axes in tight sync: motion control, robots, fast machines.</span><span class="hu">sok tengely szoros szinkronban: mozgásvezérlés, robotok, gyors gépek.</span></span></div>
+    <small><span class="en">They are not enemies: on a real machine they often share one cable. (Your PROFINET drive still has a TCP/IP web page.)</span><span class="hu">Nem ellenségek: egy valódi gépen gyakran ugyanazon a kábelen osztoznak. (A PROFINET-hajtásodnak is van TCP/IP-s weboldala.)</span></small>
   </div>
 
   <div class="cap" id="cap"><h2 id="capT"></h2><p id="capP"></p></div>
@@ -66,12 +69,17 @@
 <script>
 const X0 = 330, X1 = 1150;
 Scene({
-  home: 'index.html', prev: '3-ethercat.html', next: 'index.html', nextLabel: 'Menu',
+  home: 'index.html', prev: '3-ethercat.html', next: 'index.html', nextLabel: T('Menu', 'Menü'),
+  pageTitle: T('4 · The Showdown — TCP/IP vs PROFINET vs EtherCAT', '4 · A nagy összecsapás — TCP/IP vs PROFINET vs EtherCAT'),
   steps: [
-    { title: 'Same job, three ways', text: 'The PLC must talk to four devices. First one across the line wins. <b>(Not to scale — the real gaps are much bigger!)</b>', do: [] },
+    { title: T('Same job, three ways', 'Ugyanaz a feladat, háromféleképp'),
+      text: T('The PLC must talk to four devices. First one across the line wins. <b>(Not to scale — the real gaps are much bigger!)</b>',
+              'A PLC-nek négy eszközzel kell beszélnie. Aki először ér a célba, nyer. <b>(Nem méretarányos — a valódi különbségek sokkal nagyobbak!)</b>'),
+      do: [] },
 
-    { title: 'Ready, steady, go!',
-      text: 'Watch the bureaucrat do his handshakes and forms, the courier fight the traffic, and the sushi plate… simply be done already.',
+    { title: T('Ready, steady, go!', 'Vigyázz, kész, rajt!'),
+      text: T('Watch the bureaucrat do his handshakes and forms, the courier fight the traffic, and the sushi plate… simply be done already.',
+              'Nézd, ahogy a bürokrata kézfogásokat és űrlapokat intéz, a futár küzd a forgalommal, a sushi-tányér meg… egyszerűen már kész is van.'),
       do: [
         // EtherCAT: straight through
         { id: 'rEc', x: X1, dur: 1100, ease: 'linear' },
@@ -83,20 +91,22 @@ Scene({
         // TCP/IP: paperwork
         { id: 'say', o: 1, dur: 300 },
         { id: 'rTcp', x: 450, dur: 600 },
-        { id: 'say', t: 'Forms in triplicate…', delay: 1400 }, { id: 'rTcp', x: 620, dur: 600, delay: 1400 },
-        { id: 'say', t: 'Router, a fresh label please!', delay: 2800 }, { id: 'rTcp', x: 800, dur: 600, delay: 2800 },
-        { id: 'say', t: '💥 Lost one. Sending again…', delay: 4200 }, { id: 'rTcp', x: 700, dur: 400, delay: 4200 },
-        { id: 'say', t: 'Now signing the receipt…', delay: 5400 }, { id: 'rTcp', x: X1, dur: 1800, delay: 5400 },
+        { id: 'say', t: T('Forms in triplicate…', 'Űrlapok három példányban…'), delay: 1400 }, { id: 'rTcp', x: 620, dur: 600, delay: 1400 },
+        { id: 'say', t: T('Router, a fresh label please!', 'Router, kérek egy új címkét!'), delay: 2800 }, { id: 'rTcp', x: 800, dur: 600, delay: 2800 },
+        { id: 'say', t: T('💥 Lost one. Sending again…', '💥 Elveszett egy. Újraküldöm…'), delay: 4200 }, { id: 'rTcp', x: 700, dur: 400, delay: 4200 },
+        { id: 'say', t: T('Now signing the receipt…', 'Most írom alá az elismervényt…'), delay: 5400 }, { id: 'rTcp', x: X1, dur: 1800, delay: 5400 },
         { id: 'say', o: 0, dur: 300, delay: 7200 },
         { id: 'bTcp', o: 1, dur: 400, delay: 7200 },
       ] },
 
-    { title: 'Scoreboard',
-      text: 'Roughly: <b>0.1 ms</b> for EtherCAT, <b>1 ms</b> for PROFINET RT, and for TCP/IP “<b>10 ms, if all goes well</b>”. Fair note: TCP/IP is not bad — it solves a <i>different problem</i> (anything, anywhere, reliably).',
+    { title: T('Scoreboard', 'Eredményjelző'),
+      text: T('Roughly: <b>0.1 ms</b> for EtherCAT, <b>1 ms</b> for PROFINET RT, and for TCP/IP “<b>10 ms, if all goes well</b>”. Fair note: TCP/IP is not bad — it solves a <i>different problem</i> (anything, anywhere, reliably).',
+              'Nagyjából: <b>0,1 ms</b> az EtherCAT-nak, <b>1 ms</b> a PROFINET RT-nek, a TCP/IP-nek pedig „<b>10 ms, ha minden jól megy</b>”. Tisztesség: a TCP/IP nem rossz — csak egy <i>másik problémát</i> old meg (bármit, bárhová, megbízhatóan).'),
       do: [ { id: 'world', o: .1, dur: 500 }, { id: 'score', o: 1, dur: 500, delay: 200 } ] },
 
-    { title: 'So which one do I use?',
-      text: 'Pick the vehicle for the job. Nobody delivers a piano by motorcycle, and nobody sends a sushi plate to the tax office.',
+    { title: T('So which one do I use?', 'Akkor melyiket használjam?'),
+      text: T('Pick the vehicle for the job. Nobody delivers a piano by motorcycle, and nobody sends a sushi plate to the tax office.',
+              'Válaszd a feladathoz illő járművet. Zongorát senki nem visz motorral, és sushi-tányért sem küld senki az adóhivatalnak.'),
       do: [ { id: 'score', o: 0, dur: 300 }, { id: 'use', o: 1, dur: 500, delay: 200 } ] },
   ]
 });
