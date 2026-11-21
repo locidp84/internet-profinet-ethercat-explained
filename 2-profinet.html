@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="hu">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,8 +7,11 @@
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body class="pn">
+<script src="assets/lang.js"></script>
 <div id="stage">
-  <div class="hdr"><div class="num">2</div><h1>PROFINET <span>· The Motorcycle Couriers</span></h1><div class="count" id="count"></div><div class="dots" id="dots"></div></div>
+  <div class="hdr"><div class="num">2</div>
+    <h1>PROFINET<span class="sec"> · <span class="en">The Motorcycle Couriers</span><span class="hu">A motoros futárok</span></span></h1>
+    <div class="count" id="count"></div><div class="dots" id="dots"></div></div>
 
   <div id="world" data-id="world">
     <!-- roads -->
@@ -21,17 +24,19 @@
         <path d="M600 300 C 800 300, 850 345, 1085 345" stroke="#bcd4f2" stroke-width="16"/>
         <path d="M600 300 C 800 300, 850 455, 1085 455" stroke="#bcd4f2" stroke-width="16"/>
       </g>
-      <text x="200" y="272" font-size="14" font-weight="800" fill="#1971c2">PRIORITY LANE (VLAN prio 6)</text>
-      <text x="200" y="388" font-size="14" font-weight="700" fill="#7b8196">regular lane</text>
+      <text class="en" x="200" y="272" font-size="14" font-weight="800" fill="#1971c2">PRIORITY LANE (VLAN prio 6)</text>
+      <text class="hu" x="200" y="272" font-size="14" font-weight="800" fill="#1971c2">ELSŐBBSÉGI SÁV (VLAN prio 6)</text>
+      <text class="en" x="200" y="388" font-size="14" font-weight="700" fill="#7b8196">regular lane</text>
+      <text class="hu" x="200" y="388" font-size="14" font-weight="700" fill="#7b8196">normál sáv</text>
     </svg>
 
-    <div class="actor card bob" data-id="ctrl" data-x="120" data-y="320"><div class="em">🧠</div><div class="lbl">PLC</div><div class="sub" data-id="ctrlSub" data-txt>controller</div></div>
-    <div class="actor card small" data-id="sw" data-x="570" data-y="320" style="z-index:3"><div class="em">🔀</div><div class="lbl">Switch</div><div class="sub">the roundabout</div></div>
+    <div class="actor card bob" data-id="ctrl" data-x="120" data-y="320"><div class="em">🧠</div><div class="lbl">PLC</div><div class="sub" data-id="ctrlSub" data-txt><span class="en">controller</span><span class="hu">vezérlő</span></div></div>
+    <div class="actor card small" data-id="sw" data-x="570" data-y="320" style="z-index:3"><div class="em">🔀</div><div class="lbl">Switch</div><div class="sub"><span class="en">the roundabout</span><span class="hu">a körforgalom</span></div></div>
 
-    <div class="actor card small" data-id="d1" data-x="1150" data-y="125"><div class="em">🚰</div><div class="lbl">Valve</div><div class="sub" data-id="s1" data-txt>closed</div></div>
-    <div class="actor card small" data-id="d2" data-x="1150" data-y="235"><div class="em">⚙️</div><div class="lbl">Drive</div><div class="sub" data-id="s2" data-txt>0 rpm</div></div>
-    <div class="actor card small" data-id="d3" data-x="1150" data-y="345"><div class="em">🔥</div><div class="lbl">Heater</div><div class="sub" data-id="s3" data-txt>off</div></div>
-    <div class="actor card small" data-id="d4" data-x="1150" data-y="455"><div class="em">💡</div><div class="lbl">Lamp</div><div class="sub" data-id="s4" data-txt>off</div></div>
+    <div class="actor card small" data-id="d1" data-x="1150" data-y="125"><div class="em">🚰</div><div class="lbl"><span class="en">Valve</span><span class="hu">Szelep</span></div><div class="sub" data-id="s1" data-txt><span class="en">closed</span><span class="hu">zárva</span></div></div>
+    <div class="actor card small" data-id="d2" data-x="1150" data-y="235"><div class="em">⚙️</div><div class="lbl"><span class="en">Drive</span><span class="hu">Hajtás</span></div><div class="sub" data-id="s2" data-txt>0 rpm</div></div>
+    <div class="actor card small" data-id="d3" data-x="1150" data-y="345"><div class="em">🔥</div><div class="lbl"><span class="en">Heater</span><span class="hu">Fűtés</span></div><div class="sub" data-id="s3" data-txt><span class="en">off</span><span class="hu">ki</span></div></div>
+    <div class="actor card small" data-id="d4" data-x="1150" data-y="455"><div class="em">💡</div><div class="lbl"><span class="en">Lamp</span><span class="hu">Lámpa</span></div><div class="sub" data-id="s4" data-txt><span class="en">off</span><span class="hu">ki</span></div></div>
 
     <div class="ok actor" data-id="ok1" data-x="1090" data-y="95" data-o="0" style="font-size:26px">✔️</div>
     <div class="ok actor" data-id="ok2" data-x="1090" data-y="205" data-o="0" style="font-size:26px">✔️</div>
@@ -40,39 +45,39 @@
 
     <!-- step 1: backstage setup -->
     <div class="actor" data-id="clerk" data-x="330" data-y="450" data-o="0"><div class="em">🧑‍💼</div></div>
-    <div class="actor bubble wide" data-id="setup" data-x="640" data-y="450" data-o="0">📋 <b>Setup, once, the slow way (with IP &amp; forms):</b> “You are the Valve. You get bytes 1–4. You answer in bytes 1–4.”</div>
+    <div class="actor bubble wide" data-id="setup" data-x="640" data-y="450" data-o="0"><span class="en">📋 <b>Setup, once, the slow way (with IP &amp; forms):</b> “You are the Valve. You get bytes 1–4. You answer in bytes 1–4.”</span><span class="hu">📋 <b>Beállítás egyszer, lassan (IP-vel és űrlapokkal):</b> „Te vagy a szelep. Az 1–4. bájtot te kapod. Az 1–4. bájttal válaszolsz.”</span></div>
 
     <!-- couriers going out (tag colour = device) -->
-    <div class="actor cour flip" data-id="cA1" data-x="230" data-y="300" data-o="0"><span class="tagc" style="background:var(--c-valve)">OPEN</span><div class="em">🏍️</div></div>
+    <div class="actor cour flip" data-id="cA1" data-x="230" data-y="300" data-o="0"><span class="tagc" style="background:var(--c-valve)"><span class="en">OPEN</span><span class="hu">NYISS</span></span><div class="em">🏍️</div></div>
     <div class="actor cour flip" data-id="cA2" data-x="315" data-y="300" data-o="0"><span class="tagc" style="background:var(--c-drive)">1200 rpm</span><div class="em">🏍️</div></div>
-    <div class="actor cour flip" data-id="cA3" data-x="400" data-y="300" data-o="0"><span class="tagc" style="background:var(--c-heater)">ON</span><div class="em">🏍️</div></div>
-    <div class="actor cour flip" data-id="cA4" data-x="485" data-y="300" data-o="0"><span class="tagc" style="background:var(--c-lamp)">ON</span><div class="em">🏍️</div></div>
+    <div class="actor cour flip" data-id="cA3" data-x="400" data-y="300" data-o="0"><span class="tagc" style="background:var(--c-heater)"><span class="en">ON</span><span class="hu">BE</span></span><div class="em">🏍️</div></div>
+    <div class="actor cour flip" data-id="cA4" data-x="485" data-y="300" data-o="0"><span class="tagc" style="background:var(--c-lamp)"><span class="en">ON</span><span class="hu">BE</span></span><div class="em">🏍️</div></div>
 
     <!-- couriers coming back -->
-    <div class="actor cour" data-id="cB1" data-x="1010" data-y="125" data-o="0"><span class="tagc" style="background:var(--c-valve)">open ✔</span><div class="em">🏍️</div></div>
+    <div class="actor cour" data-id="cB1" data-x="1010" data-y="125" data-o="0"><span class="tagc" style="background:var(--c-valve)"><span class="en">open ✔</span><span class="hu">nyitva ✔</span></span><div class="em">🏍️</div></div>
     <div class="actor cour" data-id="cB2" data-x="1010" data-y="235" data-o="0"><span class="tagc" style="background:var(--c-drive)">1187 rpm</span><div class="em">🏍️</div></div>
     <div class="actor cour" data-id="cB3" data-x="1010" data-y="345" data-o="0"><span class="tagc" style="background:var(--c-heater)">21 °C</span><div class="em">🏍️</div></div>
-    <div class="actor cour" data-id="cB4" data-x="1010" data-y="455" data-o="0"><span class="tagc" style="background:var(--c-lamp)">lamp OK</span><div class="em">🏍️</div></div>
+    <div class="actor cour" data-id="cB4" data-x="1010" data-y="455" data-o="0"><span class="tagc" style="background:var(--c-lamp)"><span class="en">lamp OK</span><span class="hu">lámpa OK</span></span><div class="em">🏍️</div></div>
 
-    <div class="actor" data-id="trk" data-txt data-x="330" data-y="372" data-o="0"><div class="em" style="font-size:52px">🚚</div><div class="sub">someone’s cat-video upload</div></div>
+    <div class="actor" data-id="trk" data-txt data-x="330" data-y="372" data-o="0"><div class="em" style="font-size:52px">🚚</div><div class="sub"><span class="en">someone’s cat-video upload</span><span class="hu">valaki cicás videót tölt fel</span></div></div>
 
     <!-- step 5: again and again -->
-    <div class="actor panel" data-id="cyc" data-x="400" data-y="470" data-o="0" style="padding:8px 18px;border-radius:14px"><b data-id="cycT" data-txt style="font-size:22px">⏱️ Cycle #1 · 1 ms</b></div>
-    <div class="actor bubble" data-id="lost" data-x="820" data-y="470" data-o="0">💥 A courier got lost? Nobody resends old news — the <b>next cycle</b> brings fresh data. 🐕 Too many misses in a row → alarm.</div>
+    <div class="actor panel" data-id="cyc" data-x="400" data-y="470" data-o="0" style="padding:8px 18px;border-radius:14px"><b data-id="cycT" data-txt style="font-size:22px">⏱️ <span class="en">Cycle #1 · 1 ms</span><span class="hu">1. ciklus · 1 ms</span></b></div>
+    <div class="actor bubble" data-id="lost" data-x="820" data-y="470" data-o="0"><span class="en">💥 A courier got lost? Nobody resends old news — the <b>next cycle</b> brings fresh data. 🐕 Too many misses in a row → alarm.</span><span class="hu">💥 Elveszett egy futár? Senki nem küldi újra a régi híreket — a <b>következő ciklus</b> friss adatot hoz. 🐕 Ha túl sok marad ki egymás után → riasztás.</span></div>
 
     <!-- step 6: the catch -->
-    <div class="actor cour flip" data-id="cX" data-x="330" data-y="296" data-o="0"><span class="tagc" style="background:var(--c-valve)">OPEN</span><div class="em">🏍️</div></div>
-    <div class="actor bubble" data-id="wait" data-x="360" data-y="205" data-o="0">😤 Can’t overtake a truck that is already on the crossing!</div>
+    <div class="actor cour flip" data-id="cX" data-x="330" data-y="296" data-o="0"><span class="tagc" style="background:var(--c-valve)"><span class="en">OPEN</span><span class="hu">NYISS</span></span><div class="em">🏍️</div></div>
+    <div class="actor bubble" data-id="wait" data-x="360" data-y="205" data-o="0"><span class="en">😤 Can’t overtake a truck that is already on the crossing!</span><span class="hu">😤 Nem előzhetek meg egy kamiont, ami már a kereszteződésben van!</span></div>
   </div>
 
   <div class="actor panel" data-id="verdict" data-x="640" data-y="300" data-o="0" style="width:800px">
-    <h3>Verdict: PROFINET RT</h3>
+    <h3><span class="en">Verdict: PROFINET RT</span><span class="hu">Értékelés: PROFINET RT</span></h3>
     <ul>
-      <li>✅ Fast: no IP, no TCP, no handshakes, no receipts</li>
-      <li>✅ Ordinary Ethernet cables and switches</li>
-      <li>✅ Right size for most machines</li>
-      <li>⚠️ One frame per device, in each direction</li>
-      <li>⚠️ Switch queues add a little jitter</li>
+      <li><span class="en">✅ Fast: no IP, no TCP, no handshakes, no receipts</span><span class="hu">✅ Gyors: se IP, se TCP, se kézfogás, se nyugta</span></li>
+      <li><span class="en">✅ Ordinary Ethernet cables and switches</span><span class="hu">✅ Hagyományos Ethernet-kábel és switch</span></li>
+      <li><span class="en">✅ Right size for most machines</span><span class="hu">✅ A legtöbb géphez pont jó méret</span></li>
+      <li><span class="en">⚠️ One frame per device, in each direction</span><span class="hu">⚠️ Eszközönként egy keret, mindkét irányban</span></li>
+      <li><span class="en">⚠️ Switch queues add a little jitter</span><span class="hu">⚠️ A switch-sorok egy kis jittert adnak</span></li>
     </ul>
   </div>
 
@@ -85,7 +90,7 @@
 const devY = [125, 235, 345, 455];
 function ride(n, t0) { // n = 1..4, start time t0
   return [
-    { id: 'cA' + n, x: 570, y: 300, dur: 900 + 0, delay: t0, ease: 'ease-in' },
+    { id: 'cA' + n, x: 570, y: 300, dur: 900, delay: t0, ease: 'ease-in' },
     { id: 'cA' + n, x: 1010, y: devY[n - 1], dur: 1000, delay: t0 + 900, ease: 'ease-out' },
   ];
 }
@@ -97,21 +102,28 @@ function back(n, t0) {
     { id: 'cB' + n, o: 0, dur: 200, delay: t0 + 2000 },
   ];
 }
+const cyc = n => ({ en: '⏱️ Cycle #' + n + ' · 1 ms', hu: '⏱️ ' + n + '. ciklus · 1 ms' });
 Scene({
-  home: 'index.html', prev: '1-tcpip.html', next: '3-ethercat.html', nextLabel: 'Next scene',
+  home: 'index.html', prev: '1-tcpip.html', next: '3-ethercat.html', nextLabel: T('Next scene', 'Következő jelenet'),
+  pageTitle: T('2 · PROFINET — The Motorcycle Couriers', '2 · PROFINET — A motoros futárok'),
   steps: [
-    { title: 'The Motorcycle Couriers', text: 'Same mission, but now the PLC talks to <b>four devices every millisecond or so</b>. Nobody has time for forms. Hold on to your helmet.', do: [] },
+    { title: T('The Motorcycle Couriers', 'A motoros futárok'),
+      text: T('Same mission, but now the PLC talks to <b>four devices every millisecond or so</b>. Nobody has time for forms. Hold on to your helmet.',
+              'Ugyanaz a feladat, de most a PLC <b>négy eszközzel beszélget, nagyjából ezredmásodpercenként</b>. Itt senkinek nincs ideje űrlapokra. Kapaszkodj a bukósisakba.'),
+      do: [] },
 
-    { title: 'Backstage: the paperwork happens once',
-      text: 'Before the show, controller and devices do the boring part <b>once</b> — names, addresses, “you get bytes 1–4”. (That setup talk really does use IP and forms.) Then the forms are retired.',
+    { title: T('Backstage: the paperwork happens once', 'Színfalak mögött: a papírmunka egyszer történik'),
+      text: T('Before the show, controller and devices do the boring part <b>once</b> — names, addresses, “you get bytes 1–4”. (That setup talk really does use IP and forms.) Then the forms are retired.',
+              'Az előadás előtt a vezérlő és az eszközök <b>egyszer</b> elvégzik az unalmas részt — nevek, címek, „te az 1–4. bájtot kapod”. (Ez a beállítás tényleg IP-t és űrlapokat használ.) Utána az űrlapokat nyugdíjazzuk.'),
       do: [
         { id: 'clerk', o: 1, dur: 400 }, { id: 'setup', o: 1, dur: 500, delay: 200 },
         { id: 'ok1', o: 1, dur: 300, delay: 900 }, { id: 'ok2', o: 1, dur: 300, delay: 1200 },
         { id: 'ok3', o: 1, dur: 300, delay: 1500 }, { id: 'ok4', o: 1, dur: 300, delay: 1800 },
       ] },
 
-    { title: 'Load the couriers',
-      text: 'Each device gets <b>its own courier</b>: a plain Ethernet frame (the helmet says <b>0x8892 = PROFINET</b>) carrying just the data. No IP, no TCP, no handshake, no receipt.',
+    { title: T('Load the couriers', 'Berakjuk a futárokat'),
+      text: T('Each device gets <b>its own courier</b>: a plain Ethernet frame (the helmet says <b>0x8892 = PROFINET</b>) carrying just the data. No IP, no TCP, no handshake, no receipt.',
+              'Minden eszköz kap egy <b>saját futárt</b>: egy sima Ethernet-keretet (a sisakon az áll: <b>0x8892 = PROFINET</b>), ami csak az adatot viszi. Se IP, se TCP, se kézfogás, se nyugta.'),
       do: [
         { id: 'clerk', o: 0, dur: 300 }, { id: 'setup', o: 0, dur: 300 },
         { id: 'ok1', o: 0, dur: 300 }, { id: 'ok2', o: 0, dur: 300 }, { id: 'ok3', o: 0, dur: 300 }, { id: 'ok4', o: 0, dur: 300 },
@@ -119,36 +131,40 @@ Scene({
         { id: 'cA3', o: 1, dur: 300, delay: 400 }, { id: 'cA4', o: 1, dur: 300, delay: 550 },
       ] },
 
-    { title: 'Go! Priority lane',
-      text: 'The frames carry a <b>priority tag</b>, so they zoom past the regular traffic. The switch only reads the outer <b>MAC label</b> and points each courier to the right exit. Nothing to unwrap.',
+    { title: T('Go! Priority lane', 'Indulás! Elsőbbségi sáv'),
+      text: T('The frames carry a <b>priority tag</b>, so they zoom past the regular traffic. The switch only reads the outer <b>MAC label</b> and points each courier to the right exit. Nothing to unwrap.',
+              'A keretek <b>prioritás-címkét</b> viselnek, ezért elszáguldanak a normál forgalom mellett. A switch csak a külső <b>MAC-címkét</b> olvassa, és a megfelelő kijárathoz irányítja a futárt. Nincs mit kibontani.'),
       do: [
         { id: 'trk', o: 1, dur: 400 }, { id: 'trk', x: 480, dur: 5000, ease: 'linear' },
         ...ride(1, 0), ...ride(2, 200), ...ride(3, 400), ...ride(4, 600),
       ] },
 
-    { title: 'Delivery, and back again',
-      text: 'Each device grabs its bytes and sends its <b>own courier back</b>. Four devices = four couriers out and four back, every cycle.',
+    { title: T('Delivery, and back again', 'Kézbesítés, aztán vissza'),
+      text: T('Each device grabs its bytes and sends its <b>own courier back</b>. Four devices = four couriers out and four back, every cycle.',
+              'Minden eszköz leveszi a saját bájtjait, és elküldi a <b>saját futárját vissza</b>. Négy eszköz = négy futár oda, négy vissza, minden ciklusban.'),
       do: [
         { id: 'cA1', o: 0, dur: 250 }, { id: 'cA2', o: 0, dur: 250 }, { id: 'cA3', o: 0, dur: 250 }, { id: 'cA4', o: 0, dur: 250 },
         { id: 'trk', o: 0, dur: 300 },
-        { id: 's1', t: 'OPEN', cls: 'pulse', delay: 100 }, { id: 's2', t: '1200 rpm', delay: 100 },
-        { id: 's3', t: 'ON', delay: 100 }, { id: 's4', t: 'ON', delay: 100 },
+        { id: 's1', t: T('OPEN', 'NYITVA'), delay: 100 }, { id: 's2', t: '1200 rpm', delay: 100 },
+        { id: 's3', t: T('ON', 'BE'), delay: 100 }, { id: 's4', t: T('ON', 'BE'), delay: 100 },
         { id: 'd1', cls: 'pulse', delay: 100 }, { id: 'd2', cls: 'pulse', delay: 100 }, { id: 'd3', cls: 'pulse', delay: 100 }, { id: 'd4', cls: 'pulse', delay: 100 },
         ...back(1, 500), ...back(2, 700), ...back(3, 900), ...back(4, 1100),
-        { id: 'ctrlSub', t: 'got 4 answers ✔', delay: 3200 },
+        { id: 'ctrlSub', t: T('got 4 answers ✔', 'megjött 4 válasz ✔'), delay: 3200 },
       ] },
 
-    { title: 'Again. And again. And again.',
-      text: 'Every cycle (1 ms, 2 ms, 4 ms…) the couriers ride again, no questions asked. <b>No receipts, no resending</b>: yesterday’s temperature is worthless anyway.',
+    { title: T('Again. And again. And again.', 'Újra. És újra. És megint.'),
+      text: T('Every cycle (1 ms, 2 ms, 4 ms…) the couriers ride again, no questions asked. <b>No receipts, no resending</b>: yesterday’s temperature is worthless anyway.',
+              'Minden ciklusban (1 ms, 2 ms, 4 ms…) a futárok újra elindulnak, kérdezés nélkül. <b>Nincs nyugta, nincs újraküldés</b>: a tegnapi hőmérséklet úgyis használhatatlan.'),
       do: [
         { id: 'cyc', o: 1, dur: 400 },
-        { id: 'cycT', t: '⏱️ Cycle #2 · 1 ms', delay: 900 }, { id: 'cycT', t: '⏱️ Cycle #3 · 1 ms', delay: 1800 },
-        { id: 'cycT', t: '⏱️ Cycle #4 · 1 ms', delay: 2700 }, { id: 'cycT', t: '⏱️ Cycle #5 · 1 ms', delay: 3600 },
+        { id: 'cycT', t: cyc(2), delay: 900 }, { id: 'cycT', t: cyc(3), delay: 1800 },
+        { id: 'cycT', t: cyc(4), delay: 2700 }, { id: 'cycT', t: cyc(5), delay: 3600 },
         { id: 'lost', o: 1, dur: 500, delay: 1500 },
       ] },
 
-    { title: 'The honest catch',
-      text: 'A truck that is <b>already crossing</b> the switch cannot be stopped. On 100 Mbit/s that is at most ~120 µs. Tiny. But “tiny and random” is exactly what engineers call <b>jitter</b>.',
+    { title: T('The honest catch', 'Az őszinte csavar'),
+      text: T('A truck that is <b>already crossing</b> the switch cannot be stopped. On 100 Mbit/s that is at most ~120 µs. Tiny. But “tiny and random” is exactly what engineers call <b>jitter</b>.',
+              'Egy kamiont, ami <b>már áthalad</b> a switchen, nem lehet megállítani. 100 Mbit/s-on ez legfeljebb ~120 µs. Semmi. De a „semmi és véletlenszerű” pontosan az, amit a mérnökök <b>jitternek</b> hívnak.'),
       do: [
         { id: 'cyc', o: 0, dur: 300 }, { id: 'lost', o: 0, dur: 300 },
         { id: 'trk', t: '<div class="em" style="font-size:52px">🚚</div>', o: 1, x: 570, y: 320, dur: 800, delay: 100 },
@@ -160,8 +176,9 @@ Scene({
         { id: 'cX', x: 570, y: 300, dur: 600, delay: 3200 }, { id: 'cX', x: 1010, y: 125, dur: 1000, delay: 3800 }, { id: 'cX', o: 0, dur: 200, delay: 4800 },
       ] },
 
-    { title: 'Verdict',
-      text: 'Fast, light and happy on <b>normal Ethernet infrastructure</b>. Most machines in the world run on this. Next: what if there were no couriers at all?',
+    { title: T('Verdict', 'Értékelés'),
+      text: T('Fast, light and happy on <b>normal Ethernet infrastructure</b>. Most machines in the world run on this. Next: what if there were no couriers at all?',
+              'Gyors, könnyű, és simán megvan a <b>hagyományos Ethernet-infrastruktúrán</b>. A világ legtöbb gépe ezen fut. Jön a következő: mi lenne, ha egyáltalán nem lennének futárok?'),
       do: [ { id: 'world', o: .12, dur: 600 }, { id: 'verdict', o: 1, dur: 600 } ] },
   ]
 });
