@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>4 · The Showdown — TCP/IP vs PROFINET vs EtherCAT</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .row{display:flex;align-items:center;gap:14px;margin:12px 0;font-weight:700;font-size:22px}
+  .row .nm{width:150px}
+  .row .barbox{width:470px}
+  .row .bar{height:30px;border-radius:15px}
+  .row .tm{font-size:20px;color:#333;white-space:nowrap}
+  .use{display:flex;gap:16px;align-items:flex-start;margin:9px 0;font-size:21px;font-weight:600;line-height:1.3}
+  .use .ic{font-size:40px;line-height:1}
+  .use b{color:var(--accent)}
+</style>
+</head>
+<body class="race">
+<div id="stage">
+  <div class="hdr"><div class="num">4</div><h1>The Showdown <span>· same job, three ways</span></h1><div class="count" id="count"></div><div class="dots" id="dots"></div></div>
+
+  <div id="world" data-id="world">
+    <!-- lanes -->
+    <div class="road" style="left:300px;top:186px;width:890px"></div>
+    <div class="road" style="left:300px;top:321px;width:890px"></div>
+    <div class="road" style="left:300px;top:456px;width:890px"></div>
+
+    <div class="actor card small" data-id="lTcp" data-x="150" data-y="160"><div class="em">🧑‍💼</div><div class="lbl">TCP/IP</div></div>
+    <div class="actor card small" data-id="lPn" data-x="150" data-y="295"><div class="em">🏍️</div><div class="lbl">PROFINET RT</div></div>
+    <div class="actor card small" data-id="lEc" data-x="150" data-y="430"><div class="em">🍣</div><div class="lbl">EtherCAT</div></div>
+
+    <div class="actor" data-id="f1" data-x="1215" data-y="175" data-s="1"><div class="em" style="font-size:52px">🏁</div></div>
+    <div class="actor" data-id="f2" data-x="1215" data-y="310"><div class="em" style="font-size:52px">🏁</div></div>
+    <div class="actor" data-id="f3" data-x="1215" data-y="445"><div class="em" style="font-size:52px">🏁</div></div>
+
+    <div class="actor" data-id="rTcp" data-x="330" data-y="160"><div class="em" style="font-size:56px">🧑‍💼</div></div>
+    <div class="actor flip" data-id="rPn" data-x="330" data-y="295"><div class="em" style="font-size:56px">🏍️</div></div>
+    <div class="actor" data-id="rEc" data-x="330" data-y="430"><div class="em" style="font-size:56px">🍣</div></div>
+
+    <div class="actor bubble" data-id="say" data-x="620" data-y="108" data-o="0" data-txt style="font-size:17px">Handshake first…</div>
+
+    <div class="actor mini" data-id="bTcp" data-x="1060" data-y="108" data-o="0" style="border-color:#e8590c">🐌 10 ms… “eventually”</div>
+    <div class="actor mini" data-id="bPn" data-x="1075" data-y="243" data-o="0" style="border-color:#1971c2">✅ ≈ 1 ms</div>
+    <div class="actor mini" data-id="bEc" data-x="1075" data-y="378" data-o="0" style="border-color:#099268">🏆 ≈ 0.1 ms</div>
+  </div>
+
+  <div class="actor panel" data-id="score" data-x="640" data-y="295" data-o="0" style="width:960px">
+    <h3>Scoreboard <small style="display:inline;font-size:16px;margin-left:10px">(typical orders of magnitude, log scale — not a benchmark)</small></h3>
+    <div class="row"><span class="nm">EtherCAT</span><span class="barbox"><div class="bar" style="width:70px;background:#099268"></div></span><span class="tm">≈ 0.1 ms</span></div>
+    <div class="row"><span class="nm">PROFINET RT</span><span class="barbox"><div class="bar" style="width:230px;background:#1971c2"></div></span><span class="tm">≈ 1 ms</span></div>
+    <div class="row"><span class="nm">TCP/IP</span><span class="barbox"><div class="bar" style="width:440px;background:linear-gradient(90deg,#e8590c 60%,rgba(232,89,12,0))"></div></span><span class="tm">10 ms … no promises</span></div>
+  </div>
+
+  <div class="actor panel" data-id="use" data-x="640" data-y="295" data-o="0" style="width:1020px">
+    <div class="use"><span class="ic">🧑‍💼</span><span><b>TCP/IP</b> — device web pages, firmware updates, OPC UA, SCADA, cloud. Anything that can wait a moment.</span></div>
+    <div class="use"><span class="ic">🏍️</span><span><b>PROFINET</b> — everyday machine I/O: PLC ↔ drives, valves, I/O blocks, on ordinary switches.</span></div>
+    <div class="use"><span class="ic">🍣</span><span><b>EtherCAT</b> — many axes in tight sync: motion control, robots, fast machines.</span></div>
+    <small>They are not enemies: on a real machine they often share one cable. (Your PROFINET drive still has a TCP/IP web page.)</small>
+  </div>
+
+  <div class="cap" id="cap"><h2 id="capT"></h2><p id="capP"></p></div>
+</div>
+
+<script src="assets/engine.js"></script>
+<script>
+const X0 = 330, X1 = 1150;
+Scene({
+  home: 'index.html', prev: '3-ethercat.html', next: 'index.html', nextLabel: 'Menu',
+  steps: [
+    { title: 'Same job, three ways', text: 'The PLC must talk to four devices. First one across the line wins. <b>(Not to scale — the real gaps are much bigger!)</b>', do: [] },
+
+    { title: 'Ready, steady, go!',
+      text: 'Watch the bureaucrat do his handshakes and forms, the courier fight the traffic, and the sushi plate… simply be done already.',
+      do: [
+        // EtherCAT: straight through
+        { id: 'rEc', x: X1, dur: 1100, ease: 'linear' },
+        { id: 'bEc', o: 1, dur: 400, delay: 1100 },
+        // PROFINET: ride, short stop at the switch, ride
+        { id: 'rPn', x: 700, dur: 1100 },
+        { id: 'rPn', x: X1, dur: 1300, delay: 1400 },
+        { id: 'bPn', o: 1, dur: 400, delay: 2700 },
+        // TCP/IP: paperwork
+        { id: 'say', o: 1, dur: 300 },
+        { id: 'rTcp', x: 450, dur: 600 },
+        { id: 'say', t: 'Forms in triplicate…', delay: 1400 }, { id: 'rTcp', x: 620, dur: 600, delay: 1400 },
+        { id: 'say', t: 'Router, a fresh label please!', delay: 2800 }, { id: 'rTcp', x: 800, dur: 600, delay: 2800 },
+        { id: 'say', t: '💥 Lost one. Sending again…', delay: 4200 }, { id: 'rTcp', x: 700, dur: 400, delay: 4200 },
+        { id: 'say', t: 'Now signing the receipt…', delay: 5400 }, { id: 'rTcp', x: X1, dur: 1800, delay: 5400 },
+        { id: 'say', o: 0, dur: 300, delay: 7200 },
+        { id: 'bTcp', o: 1, dur: 400, delay: 7200 },
+      ] },
+
+    { title: 'Scoreboard',
+      text: 'Roughly: <b>0.1 ms</b> for EtherCAT, <b>1 ms</b> for PROFINET RT, and for TCP/IP “<b>10 ms, if all goes well</b>”. Fair note: TCP/IP is not bad — it solves a <i>different problem</i> (anything, anywhere, reliably).',
+      do: [ { id: 'world', o: .1, dur: 500 }, { id: 'score', o: 1, dur: 500, delay: 200 } ] },
+
+    { title: 'So which one do I use?',
+      text: 'Pick the vehicle for the job. Nobody delivers a piano by motorcycle, and nobody sends a sushi plate to the tax office.',
+      do: [ { id: 'score', o: 0, dur: 300 }, { id: 'use', o: 1, dur: 500, delay: 200 } ] },
+  ]
+});
+</script>
+</body>
+</html>
